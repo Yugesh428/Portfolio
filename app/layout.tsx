@@ -1,13 +1,10 @@
-// app/layout.tsx
 import type { Metadata } from "next";
-import "../styles/globals.css"; // ✅ works if app/globals.css exists
+import "../styles/globals.css";
 import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 
 export const metadata: Metadata = {
   title: "Yugesh Bastola — Full Stack Developer",
-  description:
-    "Portfolio website of Yugesh Bastola (Full Stack Developer: Node.js, React, Next.js, TypeScript, MSSQL).",
+  description: "Portfolio of Yugesh Bastola",
 };
 
 export default function RootLayout({
@@ -16,11 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="scroll-smooth">
+      <body className="bg-[#050505] text-white antialiased">
         <Navbar />
-        <main className="container">{children}</main>
-        <Footer />
+        {children}
       </body>
     </html>
   );
