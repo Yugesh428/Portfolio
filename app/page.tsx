@@ -327,7 +327,7 @@ export default function Page() {
               <EducationCard
                 school="Broadway Infosys"
                 location="Kathmandu"
-                status="Certification"
+                status="Ongoing"
                 desc="Deep-dive into Core Java and Backend Logic."
               />
             </div>
