@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
 import Navbar from "../components/Navbar";
+import Chatbot from "../components/Chatbot";
+import PageLoader from "../components/PageLoader";
+import ScrollProgress from "../components/ScrollProgress";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: {
@@ -15,6 +19,8 @@ export const metadata: Metadata = {
     "Next.js Developer",
     "SaaS Specialist",
     "Nodejs Developer",
+    "Remote Intern",
+    "Digital Pathshala",
   ],
   authors: [{ name: "Yugesh Bastola" }],
   openGraph: {
@@ -48,8 +54,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className="bg-[#050505] text-white antialiased">
+        <PageLoader />
+        <ScrollProgress />
         <Navbar />
         {children}
+        <Chatbot />
+        <Analytics />
       </body>
     </html>
   );
