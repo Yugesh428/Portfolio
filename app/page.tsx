@@ -1,7 +1,5 @@
 "use client";
 
-import HeroNetwork from "@/components/HeroNetwork";
-
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
@@ -32,208 +30,350 @@ import {
 import { FaJava } from "react-icons/fa";
 
 import SkillBar from "@/components/SkillBar";
+import AIDeveloperAvatar from "@/components/AIDeveloperAvatar";
 
 export default function Page() {
   return (
-    <div className="relative min-h-screen bg-[#050505] text-white selection:bg-cyan-500/30">
-      {/* Background Mesh */}
+    <div className="relative min-h-screen bg-[#050B18] text-white selection:bg-cyan-500/30">
+      {/* Background Mesh — for non-hero sections */}
       <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-purple-900/15 blur-[140px]" />
-        <div className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-cyan-900/15 blur-[140px]" />
-        <div className="absolute top-[40%] left-[30%] w-[20%] h-[20%] rounded-full bg-blue-900/10 blur-[100px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-900/10 blur-[140px]" />
+        <div className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-cyan-900/10 blur-[140px]" />
+        <div className="absolute top-[40%] left-[30%] w-[20%] h-[20%] rounded-full bg-blue-900/8 blur-[100px]" />
       </div>
 
       <main className="relative z-10 max-w-7xl mx-auto px-6">
         {/* ===== HERO SECTION ===== */}
         <section
           id="home"
-          className="min-h-screen flex flex-col justify-center items-center text-center pt-28 pb-16 relative overflow-hidden"
+          className="min-h-screen flex items-center pt-20 pb-10 relative overflow-hidden"
         >
-          {/* Spider-web network canvas — desktop only */}
-          <div className="hidden lg:block absolute inset-0">
-            <HeroNetwork />
-          </div>
+          {/* ── Background layers ── */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050B18] via-[#060E1C] to-[#081A2E]" />
 
-          {/* Floating tech pill labels — positioned to match canvas nodes */}
-          <div className="absolute inset-0 pointer-events-none">
-            {[
-              { label: "Next.js",     color: "#FFFFFF", left: "6%",  top: "20%" },
-              { label: "Node.js",     color: "#339933", left: "86%", top: "16%" },
-              { label: "TypeScript",  color: "#3178C6", left: "4%",  top: "57%" },
-              { label: "MySQL",       color: "#4479A1", left: "88%", top: "55%" },
-              { label: "React",       color: "#61DAFB", left: "80%", top: "79%" },
-              { label: "Spring Boot", color: "#6DB33F", left: "10%", top: "79%" },
-            ].map((pill, i) => (
-              <motion.div
-                key={pill.label}
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.3 + i * 0.12, duration: 0.4, type: "spring" }}
-                style={{ left: pill.left, top: pill.top, borderColor: `${pill.color}30`, color: pill.color }}
-                className="absolute hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#0a0a0a]/80 backdrop-blur border text-[10px] font-bold uppercase tracking-widest"
-              >
-                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: pill.color }} />
-                {pill.label}
-              </motion.div>
-            ))}
-          </div>
+          {/* Fine grid */}
+          <div
+            className="absolute inset-0 opacity-[0.025]"
+            style={{
+              backgroundImage:
+                "linear-gradient(#00BFFF 1px, transparent 1px), linear-gradient(90deg, #00BFFF 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
 
-          {/* Main content — z-10 so it's above canvas */}
+          {/* Top scanline glow */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#00BFFF]/40 to-transparent" />
+          {/* Bottom scanline glow */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#00BFFF]/15 to-transparent" />
+
+          {/* Large left ambient orb */}
+          <div className="absolute top-[-10%] left-[-8%] w-[55%] h-[70%] rounded-full bg-[#0a1f4e]/30 blur-[130px] pointer-events-none" />
+          {/* Bottom center ambient orb */}
+          <div className="absolute bottom-[-5%] left-[20%] w-[35%] h-[45%] rounded-full bg-[#001a3a]/25 blur-[110px] pointer-events-none" />
+
+          {/* ── RIGHT SIDE — AI Developer 3D Circle Portrait ── */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="relative z-10 space-y-8 max-w-3xl"
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.9, ease: "easeOut" }}
+            className="absolute right-0 top-0 bottom-0 w-[50%] hidden lg:flex items-center justify-center select-none"
+            style={{ zIndex: 5 }}
           >
-            {/* Badge */}
-            <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-              <span className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/10 bg-white/5 text-sm font-bold text-cyan-400 uppercase tracking-widest">
-                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                Full Stack Developer • SaaS Specialist
+            {/* Outer ambient glow */}
+            <div
+              className="absolute"
+              style={{
+                width: "520px",
+                height: "520px",
+                borderRadius: "50%",
+                background: "radial-gradient(circle, rgba(0,120,255,0.14) 0%, rgba(0,80,180,0.08) 45%, transparent 70%)",
+                filter: "blur(50px)",
+                zIndex: 0,
+              }}
+            />
+            {/* The avatar */}
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <AIDeveloperAvatar />
+            </div>
+          </motion.div>
+
+          {/* ── LEFT SIDE — content ── */}
+          <div className="relative z-10 w-full lg:w-[50%] space-y-7 px-4 sm:px-0">
+
+            {/* Status badge */}
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15, duration: 0.5 }}
+            >
+              <span
+                className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full border text-[11px] font-black text-[#00BFFF] uppercase tracking-[0.2em]"
+                style={{
+                  borderColor: "rgba(0,191,255,0.22)",
+                  background: "rgba(0,191,255,0.04)",
+                  boxShadow: "0 0 20px rgba(0,191,255,0.06)",
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-[#00BFFF] animate-pulse" />
+                Full Stack Developer · SaaS Specialist
               </span>
             </motion.div>
 
             {/* Name */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-7xl md:text-9xl font-black tracking-tighter leading-none uppercase"
-            >
-              <span className="block">Yugesh</span>
-              <span className="block bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                Bastola
-              </span>
-            </motion.h1>
-
-            {/* Divider */}
             <motion.div
-              initial={{ scaleX: 0 }}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.75 }}
+            >
+              <h1 className="text-[clamp(3.5rem,8vw,6.5rem)] font-black tracking-tighter leading-[0.9] uppercase">
+                <span className="block text-white" style={{ textShadow: "0 0 60px rgba(255,255,255,0.07)" }}>
+                  Yugesh
+                </span>
+                <span
+                  className="block"
+                  style={{
+                    backgroundImage: "linear-gradient(95deg, #7C3AED 0%, #2563EB 45%, #00BFFF 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    filter: "drop-shadow(0 0 30px rgba(0,191,255,0.20))",
+                  }}
+                >
+                  Bastola
+                </span>
+              </h1>
+            </motion.div>
+
+            {/* Animated accent line */}
+            <motion.div
+              initial={{ scaleX: 0, originX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
-              className="w-20 h-[2px] bg-gradient-to-r from-purple-500 to-cyan-500 mx-auto rounded-full"
+              transition={{ delay: 0.55, duration: 0.9, ease: "easeOut" }}
+              className="w-28 h-[2px] rounded-full"
+              style={{ background: "linear-gradient(90deg, #7C3AED, #00BFFF)" }}
             />
 
             {/* Description */}
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="space-y-3">
-              <p className="max-w-lg mx-auto text-gray-300 text-lg leading-relaxed">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65, duration: 0.6 }}
+              className="space-y-3 max-w-[460px]"
+            >
+              <p className="text-gray-300 text-[1.05rem] leading-relaxed">
                 Architecting{" "}
                 <span className="text-white font-bold">Multi-tenant SaaS solutions</span>{" "}
                 and high-availability systems using Next.js, Node.js and SQL architectures.
               </p>
-              <p className="max-w-lg mx-auto text-gray-500 text-sm leading-relaxed italic">
-                Self-taught in <span className="text-white font-medium">Core Java</span>{" "}
-                and advancing into Enterprise Backend with the Spring Boot ecosystem.
+              <p className="text-gray-500 text-sm leading-relaxed italic">
+                Self-taught in{" "}
+                <span className="text-gray-300 font-medium">Core Java</span>{" "}
+                and advancing into enterprise backend with the Spring Boot ecosystem.
               </p>
             </motion.div>
 
-            {/* CTAs */}
+            {/* CTA buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.9 }}
-              className="flex flex-wrap gap-4 justify-center"
+              transition={{ delay: 0.85, duration: 0.5 }}
+              className="flex flex-wrap gap-4 items-center"
             >
               <a
                 href="/yugesh_resume.pdf"
                 target="_blank"
-                className="group relative bg-gradient-to-r from-purple-600 to-blue-600 px-8 py-3.5 rounded-full font-bold flex items-center gap-2 shadow-lg shadow-purple-500/30 text-sm uppercase tracking-widest overflow-hidden hover:shadow-purple-500/50 transition-shadow"
+                className="group relative px-8 py-3.5 rounded-full font-black flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] overflow-hidden transition-all"
+                style={{
+                  background: "linear-gradient(95deg, #7C3AED, #2563EB)",
+                  boxShadow: "0 0 24px rgba(124,58,237,0.40), 0 2px 8px rgba(0,0,0,0.4)",
+                }}
               >
-                <span className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
-                View Resume <ExternalLink size={16} />
+                <span className="absolute inset-0 bg-white/10 translate-x-[-110%] group-hover:translate-x-[110%] transition-transform duration-500 skew-x-[-12deg]" />
+                View Resume <ExternalLink size={14} />
               </a>
+
               <a
                 href="#contact"
-                className="px-8 py-3.5 rounded-full font-bold border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-500/40 transition-all text-sm uppercase tracking-widest flex items-center gap-2"
+                className="px-8 py-3.5 rounded-full font-black border text-[11px] uppercase tracking-[0.18em] flex items-center gap-2 transition-all hover:bg-[#00BFFF]/8"
+                style={{
+                  borderColor: "rgba(0,191,255,0.30)",
+                  color: "#00BFFF",
+                  boxShadow: "0 0 16px rgba(0,191,255,0.06)",
+                }}
               >
-                Hire Me <ChevronRight size={16} />
+                Hire Me <ChevronRight size={14} />
               </a>
-              <div className="flex gap-3 items-center">
-                <a href="https://github.com/Yugesh428" target="_blank" className="p-3 rounded-full border border-white/10 bg-white/5 hover:text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/10 transition-all">
-                  <Github size={19} />
-                </a>
-                <a href="https://www.linkedin.com/in/yugesh-bastola-315638317/" target="_blank" className="p-3 rounded-full border border-white/10 bg-white/5 hover:text-blue-400 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all">
-                  <Linkedin size={19} />
-                </a>
-                <a href="mailto:bastolayugesh2@gmail.com" className="p-3 rounded-full border border-white/10 bg-white/5 hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all">
-                  <Mail size={19} />
-                </a>
+
+              <div className="flex gap-2.5 items-center">
+                {[
+                  { href: "https://github.com/Yugesh428", icon: <Github size={17} />, hover: "hover:text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/8" },
+                  { href: "https://www.linkedin.com/in/yugesh-bastola-315638317/", icon: <Linkedin size={17} />, hover: "hover:text-blue-400 hover:border-blue-500/50 hover:bg-blue-500/8" },
+                  { href: "mailto:bastolayugesh2@gmail.com", icon: <Mail size={17} />, hover: "hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/8" },
+                ].map((s, i) => (
+                  <a key={i} href={s.href} target="_blank"
+                    className={`p-2.5 rounded-full border border-white/10 bg-white/[0.04] transition-all ${s.hover}`}>
+                    {s.icon}
+                  </a>
+                ))}
               </div>
             </motion.div>
+
+            {/* Stats row */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.05, duration: 0.5 }}
+              className="flex gap-10 pt-1"
+            >
+              {[
+                { value: "6+",  label: "Projects" },
+                { value: "2+",  label: "Years" },
+                { value: "7+",  label: "Certs" },
+              ].map((stat) => (
+                <div key={stat.label} className="flex flex-col">
+                  <span
+                    className="text-[2rem] font-black tracking-tighter leading-none"
+                    style={{
+                      backgroundImage: "linear-gradient(90deg, #00BFFF, #2563EB)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {stat.value}
+                  </span>
+                  <span className="text-[9px] text-gray-600 uppercase tracking-[0.25em] font-black mt-0.5">
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+
+              {/* Divider + availability */}
+              <div className="border-l border-white/8 pl-8 flex items-center gap-2.5">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-green-400">
+                  Available for work
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* ── MOBILE portrait — small screens only ── */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 0.35, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.9 }}
+            className="lg:hidden absolute right-[-30px] top-1/2 -translate-y-1/2 pointer-events-none select-none"
+            style={{ zIndex: 2 }}
+          >
+            <div style={{ width: 260, height: 260 }}>
+              <AIDeveloperAvatar />
+            </div>
           </motion.div>
         </section>
 
         {/* ===== ABOUT ME ===== */}
         <section
           id="about"
-          className="py-24 grid lg:grid-cols-2 gap-16 items-center border-t border-white/5"
+          className="py-28 grid lg:grid-cols-2 gap-20 items-center border-t border-white/5"
         >
-          {/* Image Side */}
+          {/* ── Image Side ── */}
           <motion.div
             whileInView={{ opacity: 1, x: 0 }}
             initial={{ opacity: 0, x: -60 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="relative"
+            className="relative flex justify-center"
           >
-            <div className="relative group max-w-md mx-auto">
-              {/* Animated gradient border */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-600 rounded-3xl blur opacity-30 group-hover:opacity-60 transition duration-700" />
+            {/* Outer glow */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-[340px] h-[340px] rounded-full bg-blue-600/10 blur-[80px]" />
+            </div>
 
-              {/* Image container */}
-              <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl aspect-square">
-                <Image
-                  src="/image.png"
-                  alt="Yugesh Bastola"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                />
-                {/* bottom overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="relative group w-[340px] sm:w-[380px]">
+              {/* Gradient border ring */}
+              <div
+                className="absolute -inset-[2px] rounded-[2rem] opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+                style={{
+                  background: "linear-gradient(135deg, #7C3AED 0%, #2563EB 50%, #00BFFF 100%)",
+                  borderRadius: "2rem",
+                }}
+              />
 
-                {/* Name tag bottom */}
-                <div className="absolute bottom-16 left-5 right-5">
-                  <div className="bg-black/60 backdrop-blur border border-white/10 rounded-2xl px-4 py-3 flex items-center justify-between">
-                    <div>
-                      <p className="text-white font-black text-sm uppercase tracking-widest">Yugesh Bastola</p>
-                      <p className="text-cyan-400 text-[10px] uppercase tracking-[0.2em] font-bold">Full Stack Developer</p>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                      <span className="text-[9px] text-green-400 uppercase tracking-widest font-bold">Available</span>
-                    </div>
+              {/* Card body */}
+              <div
+                className="relative rounded-[1.9rem] overflow-hidden border border-white/5 shadow-2xl"
+                style={{ background: "linear-gradient(145deg, #0d1426 0%, #080f20 60%, #060b1a 100%)" }}
+              >
+                {/* Top bar */}
+                <div className="flex items-center justify-between px-5 pt-4 pb-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-[#7C3AED]" />
+                    <span className="text-[10px] text-gray-400 font-black uppercase tracking-[0.2em]">Yugesh Bastola</span>
+                  </div>
+                  {/* Top-right badge */}
+                  <div
+                    className="flex flex-col items-center px-3 py-1.5 rounded-xl border"
+                    style={{ borderColor: "rgba(124,58,237,0.30)", background: "rgba(124,58,237,0.10)" }}
+                  >
+                    <span className="text-purple-400 font-black text-sm leading-none">6+</span>
+                    <span className="text-[8px] text-gray-500 uppercase tracking-[0.15em] font-black mt-0.5">Projects</span>
+                  </div>
+                </div>
+
+                {/* Photo */}
+                <div className="relative mx-4 rounded-2xl overflow-hidden aspect-[4/4.2]">
+                  {/* Decorative inner glow */}
+                  <div
+                    className="absolute inset-0 z-10 pointer-events-none"
+                    style={{
+                      background:
+                        "radial-gradient(ellipse at 50% 30%, rgba(0,100,255,0.15) 0%, transparent 65%)",
+                    }}
+                  />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="https://avatars.githubusercontent.com/Yugesh428"
+                    alt="Yugesh Bastola"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
+                    style={{ filter: "brightness(0.82) contrast(1.1) saturate(0.7)" }}
+                  />
+                  {/* Bottom fade */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#080f20]/80 via-transparent to-transparent z-10" />
+                </div>
+
+                {/* Name + role + status bar */}
+                <div className="flex items-center justify-between px-5 py-4">
+                  <div>
+                    <p className="text-white font-black text-sm uppercase tracking-[0.15em]">Yugesh Bastola</p>
+                    <p className="text-cyan-400 text-[10px] uppercase tracking-[0.2em] font-bold mt-0.5">Full Stack Developer</p>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-green-500/20 bg-green-500/8">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    <span className="text-[9px] text-green-400 uppercase tracking-widest font-bold">Available</span>
+                  </div>
+                </div>
+
+                {/* Bottom badge row */}
+                <div className="px-5 pb-5">
+                  <div
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl border"
+                    style={{ borderColor: "rgba(0,191,255,0.15)", background: "rgba(0,191,255,0.05)" }}
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
+                    <span className="text-[9px] text-gray-500 uppercase tracking-[0.15em] font-black">Certifications</span>
+                    <span className="ml-auto text-cyan-400 font-black text-sm">7+</span>
                   </div>
                 </div>
               </div>
 
-              {/* Floating badge — top right */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.4, duration: 0.4, type: "spring" }}
-                className="absolute -top-4 -right-4 bg-[#0a0a0a] border border-purple-500/30 rounded-2xl px-4 py-2.5 shadow-xl shadow-purple-500/10 hidden sm:block"
-              >
-                <p className="text-purple-400 font-black text-lg tracking-tighter">6+</p>
-                <p className="text-[9px] text-gray-500 uppercase tracking-[0.15em] font-black">Projects</p>
-              </motion.div>
-
-              {/* Floating badge — bottom left */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5, duration: 0.4, type: "spring" }}
-                className="absolute -bottom-4 -left-4 bg-[#0a0a0a] border border-cyan-500/30 rounded-2xl px-4 py-2.5 shadow-xl shadow-cyan-500/10 z-20 hidden sm:block"
-              >
-                <p className="text-cyan-400 font-black text-lg tracking-tighter">7+</p>
-                <p className="text-[9px] text-gray-500 uppercase tracking-[0.15em] font-black">Certifications</p>
-              </motion.div>
+              {/* Corner accent dots */}
+              <div className="absolute -top-3 -left-3 w-6 h-6 rounded-full border-2 border-purple-500/40 bg-[#050B18]" />
+              <div className="absolute -bottom-3 -right-3 w-4 h-4 rounded-full border-2 border-cyan-500/40 bg-[#050B18]" />
             </div>
           </motion.div>
 
-          {/* Text Side */}
+          {/* ── Text Side ── */}
           <motion.div
             whileInView={{ opacity: 1, x: 0 }}
             initial={{ opacity: 0, x: 60 }}
@@ -241,54 +381,93 @@ export default function Page() {
             transition={{ duration: 0.7 }}
             className="space-y-8 text-left"
           >
-            <div>
-              <span className="text-[10px] uppercase tracking-[0.3em] text-cyan-500 font-black mb-3 block">Who I Am</span>
-              <h2 className="text-4xl font-bold italic uppercase tracking-tighter">
-                About <span className="text-cyan-400">Me:</span>
+            {/* Header */}
+            <div className="space-y-2">
+              <span className="text-[10px] uppercase tracking-[0.35em] text-cyan-500 font-black block">Who I Am</span>
+              <h2 className="text-4xl sm:text-5xl font-black italic uppercase tracking-tighter leading-none">
+                About{" "}
+                <span
+                  style={{
+                    backgroundImage: "linear-gradient(95deg, #00BFFF, #2563EB)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  Me:
+                </span>
               </h2>
+              <div className="w-14 h-[2px] rounded-full" style={{ background: "linear-gradient(90deg, #7C3AED, #00BFFF)" }} />
             </div>
 
-            <p className="text-gray-400 text-lg leading-relaxed">
+            {/* Bio */}
+            <p className="text-gray-400 text-[1.05rem] leading-relaxed">
               Passionate Full Stack Developer with professional internship
               experience at{" "}
-              <span className="text-white font-semibold">
-                Aqore Software Pvt. Ltd.
-              </span>{" "}
+              <span className="text-white font-bold">Aqore Software Pvt. Ltd.</span>{" "}
               Specialized in database schema design and{" "}
-              <span className="text-cyan-400 font-medium italic underline underline-offset-8">
+              <span
+                className="font-semibold italic"
+                style={{
+                  backgroundImage: "linear-gradient(90deg, #00BFFF, #2563EB)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  textDecoration: "underline",
+                  textDecorationColor: "rgba(0,191,255,0.4)",
+                  textUnderlineOffset: "5px",
+                }}
+              >
                 Multi-tenant SaaS architecture
               </span>
               . I focus on building secure, scalable backends that power
               intuitive user experiences.
             </p>
 
-            {/* Traits */}
+            {/* Trait pills */}
             <div className="flex flex-wrap gap-2">
-              {["Problem Solver", "SaaS Architecture", "Clean Code", "Self-taught Java", "API Design"].map((trait) => (
-                <span key={trait} className="text-[10px] px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-gray-400 uppercase tracking-widest font-bold hover:border-cyan-500/30 hover:text-cyan-400 transition-all cursor-default">
+              {["Problem Solver", "SaaS Architecture", "Clean Code", "Self-Taught Java", "API Design"].map((trait) => (
+                <span
+                  key={trait}
+                  className="text-[10px] px-3.5 py-1.5 rounded-full border bg-white/[0.03] text-gray-400 uppercase tracking-widest font-bold hover:border-cyan-500/40 hover:text-cyan-400 hover:bg-cyan-500/5 transition-all cursor-default"
+                  style={{ borderColor: "rgba(255,255,255,0.10)" }}
+                >
                   {trait}
                 </span>
               ))}
             </div>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-2 gap-4 pt-2">
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-xl hover:border-cyan-500/30 transition-all relative overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h4 className="text-cyan-400 font-black text-3xl tracking-tighter">2+</h4>
-                <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-1">Years TypeScript</p>
-              </motion.div>
-              <motion.div
-                whileHover={{ scale: 1.03 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-xl hover:border-purple-500/30 transition-all relative overflow-hidden group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <h4 className="text-purple-400 font-black text-3xl tracking-tighter">1+</h4>
-                <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-1">Year Experience</p>
-              </motion.div>
+            {/* Stats cards */}
+            <div className="grid grid-cols-2 gap-4 pt-1">
+              {[
+                { value: "2+", label: "Years TypeScript", color: "#00BFFF", accent: "rgba(0,191,255,0.08)", border: "rgba(0,191,255,0.18)" },
+                { value: "1+", label: "Year Experience", color: "#a78bfa", accent: "rgba(124,58,237,0.08)", border: "rgba(124,58,237,0.18)" },
+              ].map((stat) => (
+                <motion.div
+                  key={stat.label}
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  className="p-6 rounded-2xl border relative overflow-hidden group transition-all"
+                  style={{ background: stat.accent, borderColor: stat.border }}
+                >
+                  {/* Hover shimmer */}
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ background: `radial-gradient(ellipse at 50% 0%, ${stat.accent} 0%, transparent 70%)` }}
+                  />
+                  <h4
+                    className="font-black text-3xl tracking-tighter"
+                    style={{
+                      backgroundImage: `linear-gradient(90deg, ${stat.color}, ${stat.color}aa)`,
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    {stat.value}
+                  </h4>
+                  <p className="text-[10px] text-gray-500 uppercase tracking-[0.2em] font-black mt-1">{stat.label}</p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </section>
