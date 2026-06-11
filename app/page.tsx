@@ -14,6 +14,10 @@ import {
   ChevronRight,
   ShieldCheck,
   Eye,
+  Calendar,
+  Clock,
+  ArrowRight,
+  Tag,
 } from "lucide-react";
 
 // Brand Icons
@@ -790,6 +794,101 @@ export default function Page() {
           </div>
         </section>
 
+        {/* ===== BLOG ===== */}
+        <section id="blog" className="py-24 border-t border-white/5">
+          <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div>
+              <span className="text-[10px] uppercase tracking-[0.35em] text-cyan-500 font-black block mb-2">Writing</span>
+              <h2 className="text-4xl font-bold italic uppercase tracking-tighter">
+                Dev <span className="text-cyan-400">Blog:</span>
+              </h2>
+              <div className="w-14 h-[2px] rounded-full mt-3" style={{ background: "linear-gradient(90deg, #7C3AED, #00BFFF)" }} />
+              <p className="text-gray-500 mt-3 text-sm italic">
+                Practical articles on Next.js, TypeScript, SaaS architecture, and full-stack development.
+              </p>
+            </div>
+            <a
+              href="/blog"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-[11px] font-black uppercase tracking-[0.18em] transition-all hover:bg-cyan-500/8 flex-shrink-0 self-start sm:self-auto"
+              style={{ borderColor: "rgba(0,191,255,0.30)", color: "#00BFFF" }}
+            >
+              All Posts <ArrowRight size={13} />
+            </a>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                slug: "building-multitenant-saas-nextjs-mysql",
+                title: "Building a Multi-Tenant SaaS Platform with Next.js and MySQL",
+                description: "A deep dive into how I architected a multi-tenant SaaS platform using Next.js, Node.js, and MySQL — covering schema design, data isolation, and subdomain routing.",
+                date: "2025-06-01",
+                readingTime: "8 min read",
+                tags: ["Next.js", "MySQL", "SaaS"],
+              },
+              {
+                slug: "nextjs-typescript-best-practices-nepal",
+                title: "Next.js + TypeScript Best Practices I Learned the Hard Way",
+                description: "Practical TypeScript and Next.js patterns I picked up while building production SaaS apps — from strict type safety to API route patterns and performance optimizations.",
+                date: "2025-05-15",
+                readingTime: "6 min read",
+                tags: ["Next.js", "TypeScript", "Best Practices"],
+              },
+            ].map((post, i) => (
+              <motion.a
+                key={post.slug}
+                href={`/blog/${post.slug}`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: i * 0.1 }}
+                whileHover={{ y: -4 }}
+                className="group block p-8 rounded-2xl border border-white/8 bg-white/[0.02] hover:border-cyan-500/30 hover:bg-white/[0.04] transition-all duration-300"
+              >
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="flex items-center gap-1 text-[9px] uppercase tracking-[0.2em] font-black text-cyan-400/70 border border-cyan-500/20 px-2.5 py-1 rounded-full bg-cyan-500/5"
+                    >
+                      <Tag size={8} />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Title */}
+                <h3 className="text-xl font-black tracking-tight text-white group-hover:text-cyan-300 transition-colors leading-snug mb-3">
+                  {post.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-500 text-sm leading-relaxed mb-5">
+                  {post.description}
+                </p>
+
+                {/* Meta */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-5 text-[10px] text-gray-600 uppercase tracking-widest font-bold">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar size={10} />
+                      {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <Clock size={10} />
+                      {post.readingTime}
+                    </span>
+                  </div>
+                  <span className="text-cyan-500/60 group-hover:text-cyan-400 transition-colors flex items-center gap-1 text-[10px] uppercase tracking-widest font-black">
+                    Read <ArrowRight size={10} />
+                  </span>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+        </section>
+
         {/* ===== CONTACT ===== */}
         <section id="contact" className="py-24 border-t border-white/5">
           <motion.div
@@ -952,6 +1051,7 @@ export default function Page() {
                   { href: "#projects", label: "Projects" },
                   { href: "#experience", label: "Experience" },
                   { href: "#certifications", label: "Certifications" },
+                  { href: "#blog", label: "Blog" },
                   { href: "#contact", label: "Contact" },
                 ].map((link) => (
                   <li key={link.href}>

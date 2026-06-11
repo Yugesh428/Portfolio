@@ -36,12 +36,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       publishedTime: post.date,
       authors: ["Yugesh Bastola"],
       tags: post.tags,
+      images: [
+        {
+          url: `${baseUrl}/image.png`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: post.title,
       description: post.description,
       creator: "@yugeshbastola",
+      images: [`${baseUrl}/image.png`],
     },
   };
 }
@@ -64,10 +73,15 @@ export default function BlogPostPage({ params }: Props) {
       url: baseUrl,
     },
     publisher: {
-      "@type": "Person",
+      "@type": "Organization",
       name: "Yugesh Bastola",
       url: baseUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${baseUrl}/image.png`,
+      },
     },
+    image: `${baseUrl}/image.png`,
     url: `${baseUrl}/blog/${post.slug}`,
     keywords: post.tags.join(", "),
   };

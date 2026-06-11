@@ -9,8 +9,8 @@ const links = [
   { href: "#experience",     label: "Experience" },
   { href: "#projects",       label: "Projects" },
   { href: "#certifications", label: "Certifications" },
+  { href: "#blog",           label: "Blog" },
   { href: "#contact",        label: "Contact" },
-  { href: "/blog",           label: "Blog", isPage: true },
 ];
 
 export default function Navbar() {
@@ -72,36 +72,22 @@ export default function Navbar() {
         <ul className="hidden md:flex items-center gap-1">
           {links.map((l) => {
             const isActive = active === l.href;
-            const isBlog = l.isPage;
             return (
               <li key={l.href}>
-                {isBlog ? (
-                  <Link
-                    href={l.href}
-                    className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive
-                        ? "text-white bg-white/8"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {l.label}
-                  </Link>
-                ) : (
-                  <a
-                    href={l.href}
-                    className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      isActive
-                        ? "text-white bg-white/8"
-                        : "text-gray-400 hover:text-white hover:bg-white/5"
-                    }`}
-                  >
-                    {l.label}
-                    {/* active underline */}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-cyan-400" />
-                    )}
-                  </a>
-                )}
+                <a
+                  href={l.href}
+                  className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive
+                      ? "text-white bg-white/8"
+                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {l.label}
+                  {/* active underline */}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-cyan-400" />
+                  )}
+                </a>
               </li>
             );
           })}
@@ -130,21 +116,7 @@ export default function Navbar() {
         <div className="absolute top-full left-0 w-full bg-[#050505]/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 flex flex-col gap-1 md:hidden">
           {links.map((l) => {
             const isActive = active === l.href;
-            const isBlog = l.isPage;
-            return isBlog ? (
-              <Link
-                key={l.href}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-white/8 text-white border border-white/10"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                {l.label}
-              </Link>
-            ) : (
+            return (
               <a
                 key={l.href}
                 href={l.href}
