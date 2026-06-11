@@ -78,16 +78,13 @@ export default function Navbar() {
                 {isBlog ? (
                   <Link
                     href={l.href}
-                    className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1 ${
+                    className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                       isActive
                         ? "text-white bg-white/8"
                         : "text-gray-400 hover:text-white hover:bg-white/5"
                     }`}
                   >
                     {l.label}
-                    <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/25 text-[8px] font-black uppercase tracking-widest text-cyan-400">
-                      New
-                    </span>
                   </Link>
                 ) : (
                   <a
@@ -139,16 +136,13 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
                   isActive
                     ? "bg-white/8 text-white border border-white/10"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {l.label}
-                <span className="px-1.5 py-0.5 rounded-full bg-cyan-500/15 border border-cyan-500/25 text-[8px] font-black uppercase tracking-widest text-cyan-400">
-                  New
-                </span>
               </Link>
             ) : (
               <a
