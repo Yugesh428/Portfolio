@@ -10,6 +10,11 @@ const nextConfig = {
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
     ],
   },
+  // Ensure content/blog MDX files are included in Vercel serverless bundles
+  outputFileTracingIncludes: {
+    "/blog": ["./content/blog/**/*"],
+    "/blog/[slug]": ["./content/blog/**/*"],
+  },
 };
 
 const withMDX = createMDX({});
