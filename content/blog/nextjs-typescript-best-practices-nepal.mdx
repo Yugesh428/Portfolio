@@ -1,0 +1,157 @@
+---
+title: "Next.js + TypeScript Best Practices I Learned the Hard Way"
+date: "2025-05-15"
+description: "Practical TypeScript and Next.js patterns I picked up while building production SaaS apps — from strict type safety to API route patterns and performance optimizations."
+tags: ["Next.js", "TypeScript", "Best Practices", "Web Development", "Nepal"]
+---
+
+# Next.js + TypeScript Best Practices I Learned the Hard Way
+
+After building several production applications with Next.js and TypeScript — including SaaS platforms and enterprise backends at Aqore Software — I've accumulated a set of patterns that consistently make codebases easier to maintain and scale.
+
+## 1. Never Use `any` — Use `unknown` Instead
+
+`any` disables TypeScript's type checker entirely. When you receive data from an external source (API response, form input), use `unknown` and narrow it:
+
+```ts
+// ❌ Bad
+async function fetchUser(id: string): Promise<any> {
+  const res = await fetch(`/api/users/${id}`);
+  return res.json();
+}
+
+// ✅ Good
+interface User {
+  id: number;
+  email: string;
+  role: "admin" | "teacher" | "student";
+}
+
+async function fetchUser(id: string): Promise<User> {
+  const res = await fetch(`/api/users/${id}`);
+  if (!res.ok) throw new Error(`Failed to fetch user: ${res.status}`);
+  return res.json() as Promise<User>;
+}
+```
+
+## 2. Type Your API Routes Properly
+
+Next.js App Router makes this clean:
+
+```ts
+// app/api/users/[id]/route.ts
+import { NextRequest, NextResponse } from "next/server";
+
+interface RouteParams {
+  params: { id: string };
+}
+
+export async function GET(req: NextRequest, { params }: RouteParams) {
+  const userId = parseInt(params.id, 10);
+  if (isNaN(userId)) {
+    return NextResponse.json({ error: "Invalid ID" }, { status: 400 });
+  }
+  // ...
+}
+```
+
+## 3. Use `zod` for Runtime Validation
+
+TypeScript types disappear at runtime. For form submissions and API payloads, validate with `zod`:
+
+```ts
+import { z } from "zod";
+
+const CreateCourseSchema = z.object({
+  title: z.string().min(3).max(300),
+  description: z.string().optional(),
+  tenantId: z.number().positive(),
+});
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const result = CreateCourseSchema.safeParse(body);
+
+  if (!result.success) {
+    return NextResponse.json(
+      { error: result.error.flatten() },
+      { status: 422 }
+    );
+  }
+
+  const { title, description, tenantId } = result.data;
+  // safe to use
+}
+```
+
+## 4. Collocate Types with Their Features
+
+Don't dump everything in a single `types.ts`. Put types next to the code that uses them:
+
+```
+app/
+  api/
+    courses/
+      types.ts      ← Course-specific types here
+      route.ts
+  blog/
+    types.ts        ← Blog-specific types here
+```
+
+## 5. Server Components Are Default — Use Them
+
+Next.js App Router renders everything as Server Components by default. Only opt into `"use client"` when you actually need browser APIs or interactivity:
+
+```tsx
+// ✅ Server Component — no "use client", data fetched on server
+export default async function CoursePage({ params }: { params: { id: string } }) {
+  const course = await getCourse(params.id); // direct DB call, no API round-trip
+
+  return <CourseView course={course} />;
+}
+```
+
+```tsx
+// Only this interactive part needs "use client"
+"use client";
+export function EnrollButton({ courseId }: { courseId: number }) {
+  const [loading, setLoading] = useState(false);
+  // ...
+}
+```
+
+This pattern reduces JavaScript bundle size significantly and improves Core Web Vitals — which matters for SEO.
+
+## 6. Always Handle Loading and Error States
+
+```tsx
+// app/courses/loading.tsx — automatic loading UI
+export default function Loading() {
+  return <div className="animate-pulse">Loading courses...</div>;
+}
+
+// app/courses/error.tsx — automatic error boundary
+"use client";
+export default function Error({ error, reset }: { error: Error; reset: () => void }) {
+  return (
+    <div>
+      <p>Failed to load: {error.message}</p>
+      <button onClick={reset}>Try again</button>
+    </div>
+  );
+}
+```
+
+## Key Takeaways
+
+- `unknown` > `any` always
+- Validate at the boundary (zod for API inputs)
+- Server Components by default, `"use client"` only when needed
+- Collocate types with features, not in a global dump
+- Always type your API route params
+
+These patterns have saved me hours of debugging on production systems. TypeScript is only as useful as how strictly you use it.
+
+---
+
+*Working on a Next.js project in Nepal? Let's connect — reach out through the contact section.*

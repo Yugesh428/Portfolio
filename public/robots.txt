@@ -1,4 +1,24 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
-Sitemap: https://yugeshbastola.vercel.app/sitemap.xml
+# Common crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+Sitemap: https://yugeshbastola.com.np/sitemap.xml

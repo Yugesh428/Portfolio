@@ -1,0 +1,145 @@
+---
+title: "Building a Multi-Tenant SaaS Platform with Next.js and MySQL"
+date: "2025-06-01"
+description: "A deep dive into how I architected a multi-tenant SaaS platform using Next.js, Node.js, and MySQL — covering schema design, data isolation, and subdomain routing."
+tags: ["Next.js", "MySQL", "SaaS", "Node.js", "Architecture"]
+---
+
+# Building a Multi-Tenant SaaS Platform with Next.js and MySQL
+
+Multi-tenancy is one of those architectural decisions that looks simple on the surface but has deep implications for security, scalability, and maintainability. In this post I'll walk through the approach I used when building an educational SaaS platform during my work at Digital Pathshala.
+
+## What is Multi-Tenancy?
+
+A multi-tenant system serves multiple customers (tenants) from a single codebase and infrastructure. Each tenant's data must be completely isolated — a school should never see another school's students, courses, or records.
+
+There are three common strategies:
+
+1. **Database per tenant** — maximum isolation, expensive to scale
+2. **Schema per tenant** — good isolation, works well in PostgreSQL
+3. **Shared schema with tenant ID** — most common, cost-effective, requires careful query discipline
+
+I went with option 3 — shared schema with a `tenant_id` column on every table.
+
+## Schema Design
+
+Every table that holds tenant-specific data has a `tenant_id` foreign key:
+
+```sql
+CREATE TABLE tenants (
+  id          INT PRIMARY KEY AUTO_INCREMENT,
+  subdomain   VARCHAR(100) UNIQUE NOT NULL,
+  name        VARCHAR(200) NOT NULL,
+  created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE users (
+  id          INT PRIMARY KEY AUTO_INCREMENT,
+  tenant_id   INT NOT NULL,
+  email       VARCHAR(255) NOT NULL,
+  role        ENUM('admin', 'teacher', 'student') NOT NULL,
+  UNIQUE KEY uq_tenant_email (tenant_id, email),
+  FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+
+CREATE TABLE courses (
+  id          INT PRIMARY KEY AUTO_INCREMENT,
+  tenant_id   INT NOT NULL,
+  title       VARCHAR(300) NOT NULL,
+  FOREIGN KEY (tenant_id) REFERENCES tenants(id)
+);
+```
+
+The `UNIQUE KEY uq_tenant_email` constraint is critical — the same email can exist across different tenants, but not twice within the same tenant.
+
+## Resolving the Tenant from the Subdomain
+
+In Next.js, middleware runs before every request and is the right place to resolve the tenant:
+
+```ts
+// middleware.ts
+import { NextRequest, NextResponse } from "next/server";
+
+export function middleware(req: NextRequest) {
+  const hostname = req.headers.get("host") ?? "";
+  const subdomain = hostname.split(".")[0];
+
+  // Pass subdomain to the request headers so API routes can use it
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-tenant-subdomain", subdomain);
+
+  return NextResponse.next({ request: { headers: requestHeaders } });
+}
+```
+
+Then in any API route:
+
+```ts
+// app/api/courses/route.ts
+import { headers } from "next/headers";
+import { db } from "@/lib/db";
+
+export async function GET() {
+  const subdomain = headers().get("x-tenant-subdomain");
+  const tenant = await db.query(
+    "SELECT id FROM tenants WHERE subdomain = ?",
+    [subdomain]
+  );
+
+  if (!tenant) return Response.json({ error: "Tenant not found" }, { status: 404 });
+
+  const courses = await db.query(
+    "SELECT * FROM courses WHERE tenant_id = ?",
+    [tenant.id]
+  );
+
+  return Response.json(courses);
+}
+```
+
+Every query is scoped to the resolved `tenant_id`. If you ever forget this, you expose one tenant's data to another — which is a serious security issue.
+
+## Preventing Cross-Tenant Data Leaks
+
+The most dangerous bug in multi-tenant systems is accidentally querying without a tenant filter. I enforce this through a query wrapper:
+
+```ts
+// lib/db.ts
+export async function tenantQuery<T>(
+  tenantId: number,
+  sql: string,
+  params: unknown[] = []
+): Promise<T[]> {
+  // Automatically appends tenant_id to every query
+  const scopedSql = sql.includes("WHERE")
+    ? sql.replace("WHERE", `WHERE tenant_id = ${tenantId} AND`)
+    : `${sql} WHERE tenant_id = ${tenantId}`;
+
+  return db.query(scopedSql, params);
+}
+```
+
+This is a simple but effective guardrail during development.
+
+## Deployment Considerations
+
+For subdomain routing to work in production, you need a wildcard DNS record:
+
+```
+*.yugeshbastola.com.np → your server IP
+```
+
+And in Next.js, configure the allowed domains in `next.config.mjs` or handle them through Vercel's domain settings.
+
+## Key Takeaways
+
+- Always use `tenant_id` as part of your primary lookup — never trust user-supplied IDs alone
+- Middleware is the cleanest place to resolve tenant context in Next.js
+- Add a `UNIQUE` constraint that includes `tenant_id` wherever uniqueness should be scoped per tenant
+- Consider row-level security if you move to PostgreSQL — it enforces this at the database level automatically
+
+This architecture powered a production system managing thousands of student records across multiple institutions. The shared-schema approach kept infrastructure costs low while the application-level isolation kept data safe.
+
+---
+
+*If you're building something similar or want to discuss SaaS architecture, reach out via the contact section below.*
