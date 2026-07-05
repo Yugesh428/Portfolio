@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 import { Menu, X, ExternalLink } from "lucide-react";
 
 const links = [
-  { href: "#about",          label: "About" },
-  { href: "#skills",         label: "Skills" },
-  { href: "#experience",     label: "Experience" },
-  { href: "#projects",       label: "Projects" },
-  { href: "#certifications", label: "Certifications" },
-  { href: "#blog",           label: "Blog" },
-  { href: "#contact",        label: "Contact" },
+  { href: "#about",          label: "About",          isRoute: false },
+  { href: "#skills",         label: "Skills",         isRoute: false },
+  { href: "#experience",     label: "Experience",     isRoute: false },
+  { href: "#projects",       label: "Projects",       isRoute: false },
+  { href: "#certifications", label: "Achievements", isRoute: false },
+  { href: "#contact",        label: "Contact",        isRoute: false },
 ];
 
 export default function Navbar() {
@@ -27,7 +26,9 @@ export default function Navbar() {
 
   // scroll-spy
   useEffect(() => {
-    const sectionIds = links.map((l) => l.href.replace("#", ""));
+    const sectionIds = links
+      .filter((l) => !l.isRoute)
+      .map((l) => l.href.replace("#", ""));
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -72,22 +73,25 @@ export default function Navbar() {
         <ul className="hidden md:flex items-center gap-1">
           {links.map((l) => {
             const isActive = active === l.href;
+            const className = `relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+              isActive
+                ? "text-white bg-white/8"
+                : "text-gray-400 hover:text-white hover:bg-white/5"
+            }`;
             return (
               <li key={l.href}>
-                <a
-                  href={l.href}
-                  className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? "text-white bg-white/8"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
-                  }`}
-                >
-                  {l.label}
-                  {/* active underline */}
-                  {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-cyan-400" />
-                  )}
-                </a>
+                {l.isRoute ? (
+                  <Link href={l.href} className={className}>
+                    {l.label}
+                  </Link>
+                ) : (
+                  <a href={l.href} className={className}>
+                    {l.label}
+                    {isActive && (
+                      <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-[2px] rounded-full bg-cyan-400" />
+                    )}
+                  </a>
+                )}
               </li>
             );
           })}
@@ -116,16 +120,26 @@ export default function Navbar() {
         <div className="absolute top-full left-0 w-full bg-[#050505]/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 flex flex-col gap-1 md:hidden">
           {links.map((l) => {
             const isActive = active === l.href;
-            return (
+            const className = `px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              isActive
+                ? "bg-white/8 text-white border border-white/10"
+                : "text-gray-400 hover:text-white hover:bg-white/5"
+            }`;
+            return l.isRoute ? (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className={className}
+              >
+                {l.label}
+              </Link>
+            ) : (
               <a
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all ${
-                  isActive
-                    ? "bg-white/8 text-white border border-white/10"
-                    : "text-gray-400 hover:text-white hover:bg-white/5"
-                }`}
+                className={className}
               >
                 {l.label}
               </a>

@@ -13,11 +13,6 @@ import {
   GraduationCap,
   ChevronRight,
   ShieldCheck,
-  Eye,
-  Calendar,
-  Clock,
-  ArrowRight,
-  Tag,
 } from "lucide-react";
 
 // Brand Icons
@@ -720,172 +715,191 @@ export default function Page() {
           </div>
         </section>
 
-        {/* ===== CERTIFICATIONS & BADGES ===== */}
-        <section id="certifications" className="py-24 border-t border-white/5">
-          <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 italic uppercase tracking-tighter">
-            <span className="w-12 h-[3px] bg-cyan-500 rounded-full"></span>
-            Certifications <span className="text-cyan-500">& Badges:</span>
-          </h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
-            <CertificationCard
-              title="Relay Hack x Tumlet Runner-Up"
-              issuer="TechSpire x Tumlet"
-              date="NOV 2025"
-              imgSrc="/RelayTumlet.jpg"
-              desc="Secured First Runner-Up in a hackathon focused on game design and creative innovation."
-              accent="from-yellow-500/20 to-orange-500/10"
-              badge="🏆 Runner-Up"
-            />
-            <CertificationCard
-              title="Full Stack SaaS Development"
-              issuer="Digital Pathshala"
-              date="JAN 2025 - MAY 2025"
-              imgSrc="/FullStackSaas.jpg"
-              desc="Professional training in building multi-tenant architectures and modern web stacks."
-              accent="from-cyan-500/20 to-blue-500/10"
-              badge="🎓 Course"
-            />
-            <CertificationCard
-              title="MERN Stack Development"
-              issuer="Digital Pathshala"
-              date="MARCH 2025"
-              imgSrc="/MernFullStackDigitalPatsala.jpg"
-              desc="Comprehensive completion of MongoDB, Express, React, and Node.js specialization."
-              accent="from-green-500/20 to-cyan-500/10"
-              badge="🎓 Course"
-            />
-            <CertificationCard
-              title="Database Internship"
-              issuer="Aqore Software Pvt. Ltd."
-              date="DEC 2025 - FEB 2026"
-              imgSrc="/AqoreInternship.jpg"
-              desc="Hands-on experience in MSSQL, stored procedures, and enterprise data modeling."
-              accent="from-blue-500/20 to-purple-500/10"
-              badge="💼 Internship"
-            />
-            <CertificationCard
-              title="Relay Hack Runner-Up"
-              issuer="Aqore x TechSpire"
-              date="DECEMBER 2025"
-              imgSrc="/RelayHackAqore.jpg"
-              desc="Recognized for outstanding creativity and problem-solving in a 10-day Aqore hackathon."
-              accent="from-purple-500/20 to-pink-500/10"
-              badge="🏆 Runner-Up"
-            />
-            <CertificationCard
-              title="JunctionX Kathmandu — Participation"
-              issuer="SUMS Nepal x COGKNIT"
-              date="MAY 2026"
-              imgSrc="/JunctionXNepal.jpg"
-              desc="Participated as a Hacker at JunctionX Kathmandu, a 30-hour international hackathon under Team Finland."
-              accent="from-orange-500/20 to-yellow-500/10"
-              badge="🌍 International"
-            />
-            <CertificationCard
-              title="Basics of .NET"
-              issuer="TechSpire College x APU"
-              date="2025"
-              imgSrc="/dotnet.jpg"
-              desc="Completed a 45-hour Skill Development Program in Basics of .NET at TechSpire College, in academic collaboration with Asia Pacific University."
-              accent="from-indigo-500/20 to-cyan-500/10"
-              badge="🎓 Course"
-            />
-          </div>
-        </section>
-
-        {/* ===== BLOG ===== */}
-        <section id="blog" className="py-24 border-t border-white/5">
-          <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-            <div>
-              <span className="text-[10px] uppercase tracking-[0.35em] text-cyan-500 font-black block mb-2">Writing</span>
-              <h2 className="text-4xl font-bold italic uppercase tracking-tighter">
-                Dev <span className="text-cyan-400">Blog:</span>
-              </h2>
-              <div className="w-14 h-[2px] rounded-full mt-3" style={{ background: "linear-gradient(90deg, #7C3AED, #00BFFF)" }} />
-              <p className="text-gray-500 mt-3 text-sm italic">
-                Practical articles on Next.js, TypeScript, SaaS architecture, and full-stack development.
-              </p>
-            </div>
-            <a
-              href="/blog"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-[11px] font-black uppercase tracking-[0.18em] transition-all hover:bg-cyan-500/8 flex-shrink-0 self-start sm:self-auto"
-              style={{ borderColor: "rgba(0,191,255,0.30)", color: "#00BFFF" }}
-            >
-              All Posts <ArrowRight size={13} />
-            </a>
+        {/* ===== ACHIEVEMENTS & CREDENTIALS ===== */}
+        <section id="certifications" className="py-24 border-t border-white/5 overflow-hidden">
+          {/* Header */}
+          <div className="mb-14">
+            <span className="text-[10px] uppercase tracking-[0.35em] text-cyan-500 font-black block mb-2">Proof of Work</span>
+            <h2 className="text-4xl font-bold italic uppercase tracking-tighter">
+              Achievements <span className="text-cyan-400">&amp; Credentials:</span>
+            </h2>
+            <div className="w-14 h-[2px] rounded-full mt-3" style={{ background: "linear-gradient(90deg, #7C3AED, #00BFFF)" }} />
+            <p className="text-gray-500 mt-3 text-sm italic">Hackathons won, courses completed, and real-world experience earned.</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          {/* Stats bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-3 gap-4 mb-12"
+          >
             {[
-              {
-                slug: "building-multitenant-saas-nextjs-mysql",
-                title: "Building a Multi-Tenant SaaS Platform with Next.js and MySQL",
-                description: "A deep dive into how I architected a multi-tenant SaaS platform using Next.js, Node.js, and MySQL — covering schema design, data isolation, and subdomain routing.",
-                date: "2025-06-01",
-                readingTime: "8 min read",
-                tags: ["Next.js", "MySQL", "SaaS"],
-              },
-              {
-                slug: "nextjs-typescript-best-practices-nepal",
-                title: "Next.js + TypeScript Best Practices I Learned the Hard Way",
-                description: "Practical TypeScript and Next.js patterns I picked up while building production SaaS apps — from strict type safety to API route patterns and performance optimizations.",
-                date: "2025-05-15",
-                readingTime: "6 min read",
-                tags: ["Next.js", "TypeScript", "Best Practices"],
-              },
-            ].map((post, i) => (
-              <motion.a
-                key={post.slug}
-                href={`/blog/${post.slug}`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: i * 0.1 }}
-                whileHover={{ y: -4 }}
-                className="group block p-8 rounded-2xl border border-white/8 bg-white/[0.02] hover:border-cyan-500/30 hover:bg-white/[0.04] transition-all duration-300"
+              { value: "2×", label: "Hackathon Runner-Up", color: "#f59e0b", border: "rgba(245,158,11,0.25)", bg: "rgba(245,158,11,0.05)" },
+              { value: "4+", label: "Courses & Certs", color: "#06b6d4", border: "rgba(6,182,212,0.25)", bg: "rgba(6,182,212,0.05)" },
+              { value: "1×", label: "International Hackathon", color: "#a855f7", border: "rgba(168,85,247,0.25)", bg: "rgba(168,85,247,0.05)" },
+            ].map((s) => (
+              <div
+                key={s.label}
+                className="flex flex-col items-center justify-center py-5 px-4 rounded-2xl border text-center"
+                style={{ background: s.bg, borderColor: s.border }}
               >
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="flex items-center gap-1 text-[9px] uppercase tracking-[0.2em] font-black text-cyan-400/70 border border-cyan-500/20 px-2.5 py-1 rounded-full bg-cyan-500/5"
-                    >
-                      <Tag size={8} />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Title */}
-                <h3 className="text-xl font-black tracking-tight text-white group-hover:text-cyan-300 transition-colors leading-snug mb-3">
-                  {post.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-gray-500 text-sm leading-relaxed mb-5">
-                  {post.description}
-                </p>
-
-                {/* Meta */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-5 text-[10px] text-gray-600 uppercase tracking-widest font-bold">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar size={10} />
-                      {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Clock size={10} />
-                      {post.readingTime}
-                    </span>
-                  </div>
-                  <span className="text-cyan-500/60 group-hover:text-cyan-400 transition-colors flex items-center gap-1 text-[10px] uppercase tracking-widest font-black">
-                    Read <ArrowRight size={10} />
-                  </span>
-                </div>
-              </motion.a>
+                <span className="text-3xl font-black tracking-tighter" style={{ color: s.color }}>{s.value}</span>
+                <span className="text-[9px] text-gray-500 uppercase tracking-[0.2em] font-black mt-1">{s.label}</span>
+              </div>
             ))}
+          </motion.div>
+
+          {/* Timeline */}
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-cyan-500/40 via-purple-500/20 to-transparent hidden sm:block" />
+
+            <div className="space-y-6">
+              {[
+                {
+                  title: "JunctionX Kathmandu",
+                  sub: "SUMS Nepal × COGKNIT",
+                  date: "MAY 2026",
+                  desc: "Participated as a Hacker in a 30-hour international hackathon under Team Finland. Built and pitched a real-world solution on the global stage.",
+                  imgSrc: "/JunctionXNepal.jpg",
+                  badge: "🌍 International",
+                  color: "#f59e0b",
+                  border: "rgba(245,158,11,0.2)",
+                  bg: "rgba(245,158,11,0.04)",
+                  dot: "#f59e0b",
+                },
+                {
+                  title: "Database Internship",
+                  sub: "Aqore Software Pvt. Ltd.",
+                  date: "DEC 2025 – FEB 2026",
+                  desc: "Hands-on enterprise experience in MSSQL, complex stored procedures, and production database schema optimization.",
+                  imgSrc: "/AqoreInternship.jpg",
+                  badge: "💼 Internship",
+                  color: "#3b82f6",
+                  border: "rgba(59,130,246,0.2)",
+                  bg: "rgba(59,130,246,0.04)",
+                  dot: "#3b82f6",
+                },
+                {
+                  title: "Relay Hack Runner-Up",
+                  sub: "Aqore × TechSpire",
+                  date: "DEC 2025",
+                  desc: "Recognized for outstanding creativity and problem-solving in a 10-day competitive hackathon. Secured First Runner-Up position.",
+                  imgSrc: "/RelayHackAqore.jpg",
+                  badge: "🏆 Runner-Up",
+                  color: "#f59e0b",
+                  border: "rgba(245,158,11,0.25)",
+                  bg: "rgba(245,158,11,0.05)",
+                  dot: "#f59e0b",
+                },
+                {
+                  title: "Relay Hack × Tumlet Runner-Up",
+                  sub: "TechSpire × Tumlet",
+                  date: "NOV 2025",
+                  desc: "Secured First Runner-Up in a hackathon focused on game design and creative innovation.",
+                  imgSrc: "/RelayTumlet.jpg",
+                  badge: "🏆 Runner-Up",
+                  color: "#f59e0b",
+                  border: "rgba(245,158,11,0.25)",
+                  bg: "rgba(245,158,11,0.05)",
+                  dot: "#f59e0b",
+                },
+                {
+                  title: "Full Stack SaaS Development",
+                  sub: "Digital Pathshala",
+                  date: "JAN – MAY 2025",
+                  desc: "Professional training in building multi-tenant SaaS architectures, modern web stacks, and production deployment workflows.",
+                  imgSrc: "/FullStackSaas.jpg",
+                  badge: "🎓 Certification",
+                  color: "#06b6d4",
+                  border: "rgba(6,182,212,0.2)",
+                  bg: "rgba(6,182,212,0.04)",
+                  dot: "#06b6d4",
+                },
+                {
+                  title: "MERN Stack Development",
+                  sub: "Digital Pathshala",
+                  date: "MAR 2025",
+                  desc: "Completed comprehensive MongoDB, Express, React, and Node.js specialization covering full-stack architecture patterns.",
+                  imgSrc: "/MernFullStackDigitalPatsala.jpg",
+                  badge: "🎓 Certification",
+                  color: "#22c55e",
+                  border: "rgba(34,197,94,0.2)",
+                  bg: "rgba(34,197,94,0.04)",
+                  dot: "#22c55e",
+                },
+                {
+                  title: "Basics of .NET",
+                  sub: "TechSpire College × Asia Pacific University",
+                  date: "2025",
+                  desc: "45-hour Skill Development Program in .NET fundamentals conducted in academic collaboration with APU Malaysia.",
+                  imgSrc: "/dotnet.jpg",
+                  badge: "🎓 Certification",
+                  color: "#a855f7",
+                  border: "rgba(168,85,247,0.2)",
+                  bg: "rgba(168,85,247,0.04)",
+                  dot: "#a855f7",
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.45, delay: i * 0.07 }}
+                  className="relative sm:pl-16"
+                >
+                  {/* Timeline dot */}
+                  <div
+                    className="absolute left-[18px] top-8 w-3 h-3 rounded-full border-2 border-[#050B18] hidden sm:block"
+                    style={{ backgroundColor: item.dot, boxShadow: `0 0 10px ${item.dot}80` }}
+                  />
+
+                  <div
+                    className="group flex flex-col sm:flex-row gap-0 rounded-2xl border overflow-hidden transition-all duration-300 hover:border-opacity-60"
+                    style={{ background: item.bg, borderColor: item.border }}
+                  >
+                    {/* Image strip */}
+                    <div className="sm:w-48 lg:w-56 flex-shrink-0 relative overflow-hidden" style={{ minHeight: "140px" }}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.imgSrc}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        style={{ filter: "brightness(0.75) saturate(0.8)", minHeight: "140px" }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/30" />
+                      {/* Badge overlay */}
+                      <div className="absolute top-3 left-3">
+                        <span
+                          className="text-[8px] font-black uppercase tracking-[0.15em] px-2.5 py-1 rounded-full"
+                          style={{ background: `${item.color}25`, color: item.color, border: `1px solid ${item.color}40` }}
+                        >
+                          {item.badge}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="flex-1 p-6 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <div>
+                            <h3 className="text-base font-black uppercase tracking-tight text-white leading-tight">{item.title}</h3>
+                            <p className="text-[10px] font-bold uppercase tracking-[0.15em] mt-0.5" style={{ color: item.color }}>{item.sub}</p>
+                          </div>
+                          <span className="text-[9px] font-black uppercase tracking-[0.18em] text-gray-600 flex-shrink-0 pt-0.5">{item.date}</span>
+                        </div>
+                        <p className="text-gray-500 text-sm leading-relaxed mt-2">{item.desc}</p>
+                      </div>
+                      {/* Bottom accent line */}
+                      <div className="mt-4 w-12 h-[2px] rounded-full opacity-40 group-hover:opacity-80 transition-opacity" style={{ background: item.color }} />
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -1051,7 +1065,6 @@ export default function Page() {
                   { href: "#projects", label: "Projects" },
                   { href: "#experience", label: "Experience" },
                   { href: "#certifications", label: "Certifications" },
-                  { href: "#blog", label: "Blog" },
                   { href: "#contact", label: "Contact" },
                 ].map((link) => (
                   <li key={link.href}>
@@ -1441,71 +1454,6 @@ function EducationCard({ school, location, status, desc, year }: any) {
 
       {/* bg glow */}
       <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-cyan-500/5 blur-[40px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-    </motion.div>
-  );
-}
-
-function CertificationCard({ title, issuer, date, imgSrc, desc, accent, badge }: any) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      whileHover={{ y: -6 }}
-      className="group relative bg-[#0a0a0a] border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl hover:border-cyan-500/40 transition-all duration-300 flex flex-col"
-    >
-      {/* Image top section */}
-      <div className="relative w-full h-48 overflow-hidden">
-        <Image
-          src={imgSrc}
-          alt={title}
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
-        />
-        {/* gradient overlay */}
-        <div className={`absolute inset-0 bg-gradient-to-br ${accent} mix-blend-multiply`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/40 to-transparent" />
-
-        {/* badge top-right */}
-        <div className="absolute top-3 right-3">
-          <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-black/60 backdrop-blur border border-white/10 text-white tracking-widest uppercase">
-            {badge}
-          </span>
-        </div>
-
-        {/* eye icon center on hover */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-10 h-10 rounded-full bg-cyan-500/20 backdrop-blur border border-cyan-500/40 flex items-center justify-center">
-            <Eye size={18} className="text-cyan-400" />
-          </div>
-        </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6 flex flex-col flex-grow">
-        <h3 className="text-base font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tighter italic leading-tight mb-1">
-          {title}
-        </h3>
-        <p className="text-[10px] text-cyan-400 uppercase tracking-[0.2em] font-black italic mb-3">
-          {issuer} • {date}
-        </p>
-        <p className="text-gray-500 text-xs leading-relaxed italic flex-grow mb-4">
-          {desc}
-        </p>
-        <a
-          href={imgSrc}
-          target="_blank"
-          className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-600 hover:text-cyan-400 transition-colors group/link"
-        >
-          View Document
-          <ExternalLink size={11} className="group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform" />
-        </a>
-      </div>
-
-      {/* bottom glow */}
-      <div className={`absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r ${accent} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
     </motion.div>
   );
 }
