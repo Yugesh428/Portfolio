@@ -30,12 +30,13 @@ import { FaJava } from "react-icons/fa";
 
 import SkillBar from "@/components/SkillBar";
 import AIDeveloperAvatar from "@/components/AIDeveloperAvatar";
+import AboutAvatar from "@/components/AboutAvatar";
 
 export default function Page() {
   return (
     <div className="relative min-h-screen bg-[#050B18] text-white selection:bg-cyan-500/30">
       {/* Background Mesh — for non-hero sections */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-blue-900/10 blur-[140px]" />
         <div className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-cyan-900/10 blur-[140px]" />
         <div className="absolute top-[40%] left-[30%] w-[20%] h-[20%] rounded-full bg-blue-900/8 blur-[100px]" />
@@ -45,6 +46,7 @@ export default function Page() {
         {/* ===== HERO SECTION ===== */}
         <section
           id="home"
+          aria-label="Hero — Yugesh Bastola Full Stack Developer Nepal"
           className="min-h-screen flex items-center pt-20 pb-10 relative overflow-hidden"
         >
           {/* ── Background layers ── */}
@@ -113,12 +115,12 @@ export default function Page() {
                   boxShadow: "0 0 20px rgba(0,191,255,0.06)",
                 }}
               >
-                <span className="w-2 h-2 rounded-full bg-[#00BFFF] animate-pulse" />
-                Full Stack Developer · SaaS Specialist
+                <span className="w-2 h-2 rounded-full bg-[#00BFFF] animate-pulse" aria-hidden="true" />
+                Full Stack Developer · Nepal
               </span>
             </motion.div>
 
-            {/* Name */}
+            {/* Name — Primary H1 with target keyword */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -160,14 +162,14 @@ export default function Page() {
               className="space-y-3 max-w-[460px]"
             >
               <p className="text-gray-300 text-[1.05rem] leading-relaxed">
-                Architecting{" "}
-                <span className="text-white font-bold">Multi-tenant SaaS solutions</span>{" "}
-                and high-availability systems using Next.js, Node.js and SQL architectures.
+                Full Stack Developer from Nepal building{" "}
+                <strong className="text-white font-bold">scalable SaaS web applications</strong>{" "}
+                using Next.js, Node.js, React, and SQL databases.
               </p>
               <p className="text-gray-500 text-sm leading-relaxed italic">
-                Self-taught in{" "}
-                <span className="text-gray-300 font-medium">Core Java</span>{" "}
-                and advancing into enterprise backend with the Spring Boot ecosystem.
+                MERN Stack specialist with expertise in{" "}
+                <span className="text-gray-300 font-medium">REST API development</span>{" "}
+                and enterprise backend systems. Self-learning Java &amp; Spring Boot.
               </p>
             </motion.div>
 
@@ -205,11 +207,12 @@ export default function Page() {
 
               <div className="flex gap-2.5 items-center">
                 {[
-                  { href: "https://github.com/Yugesh428", icon: <Github size={17} />, hover: "hover:text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/8" },
-                  { href: "https://www.linkedin.com/in/yugesh-bastola-315638317/", icon: <Linkedin size={17} />, hover: "hover:text-blue-400 hover:border-blue-500/50 hover:bg-blue-500/8" },
-                  { href: "mailto:bastolayugesh2@gmail.com", icon: <Mail size={17} />, hover: "hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/8" },
+                  { href: "https://github.com/Yugesh428", icon: <Github size={17} />, hover: "hover:text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/8", label: "Yugesh Bastola on GitHub" },
+                  { href: "https://www.linkedin.com/in/yugesh-bastola-315638317/", icon: <Linkedin size={17} />, hover: "hover:text-blue-400 hover:border-blue-500/50 hover:bg-blue-500/8", label: "Yugesh Bastola on LinkedIn" },
+                  { href: "mailto:bastolayugesh2@gmail.com", icon: <Mail size={17} />, hover: "hover:text-cyan-400 hover:border-cyan-500/50 hover:bg-cyan-500/8", label: "Email Yugesh Bastola" },
                 ].map((s, i) => (
-                  <a key={i} href={s.href} target="_blank"
+                  <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
+                    aria-label={s.label}
                     className={`p-2.5 rounded-full border border-white/10 bg-white/[0.04] transition-all ${s.hover}`}>
                     {s.icon}
                   </a>
@@ -274,6 +277,7 @@ export default function Page() {
         {/* ===== ABOUT ME ===== */}
         <section
           id="about"
+          aria-label="About Yugesh Bastola — Full Stack Developer Nepal"
           className="py-28 grid lg:grid-cols-2 gap-20 items-center border-t border-white/5"
         >
           {/* ── Image Side ── */}
@@ -320,25 +324,9 @@ export default function Page() {
                   </div>
                 </div>
 
-                {/* Photo */}
-                <div className="relative mx-4 rounded-2xl overflow-hidden aspect-[4/4.2]">
-                  {/* Decorative inner glow */}
-                  <div
-                    className="absolute inset-0 z-10 pointer-events-none"
-                    style={{
-                      background:
-                        "radial-gradient(ellipse at 50% 30%, rgba(0,100,255,0.15) 0%, transparent 65%)",
-                    }}
-                  />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://avatars.githubusercontent.com/Yugesh428"
-                    alt="Yugesh Bastola"
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
-                    style={{ filter: "brightness(0.82) contrast(1.1) saturate(0.7)" }}
-                  />
-                  {/* Bottom fade */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#080f20]/80 via-transparent to-transparent z-10" />
+                {/* 3D Animated Developer Avatar */}
+                <div className="relative mx-4 rounded-2xl overflow-hidden flex items-center justify-center bg-transparent py-2">
+                  <AboutAvatar />
                 </div>
 
                 {/* Name + role + status bar */}
@@ -401,10 +389,11 @@ export default function Page() {
 
             {/* Bio */}
             <p className="text-gray-400 text-[1.05rem] leading-relaxed">
-              Passionate Full Stack Developer with professional internship
-              experience at{" "}
-              <span className="text-white font-bold">Aqore Software Pvt. Ltd.</span>{" "}
-              Specialized in database schema design and{" "}
+              I'm a{" "}
+              <strong className="text-white font-bold">Full Stack Developer from Nepal</strong>{" "}
+              with hands-on internship experience at{" "}
+              <strong className="text-white font-bold">Aqore Software Pvt. Ltd.</strong>{" "}
+              I specialize in building scalable web applications, designing database schemas, and architecting{" "}
               <span
                 className="font-semibold italic"
                 style={{
@@ -417,15 +406,14 @@ export default function Page() {
                   textUnderlineOffset: "5px",
                 }}
               >
-                Multi-tenant SaaS architecture
+                cloud-based multi-tenant SaaS platforms
               </span>
-              . I focus on building secure, scalable backends that power
-              intuitive user experiences.
+              . My focus is on clean, secure Node.js backends paired with fast, intuitive React and Next.js frontends.
             </p>
 
             {/* Trait pills */}
             <div className="flex flex-wrap gap-2">
-              {["Problem Solver", "SaaS Architecture", "Clean Code", "Self-Taught Java", "API Design"].map((trait) => (
+              {["MERN Stack", "Next.js Developer", "REST API Design", "SaaS Architecture", "Node.js Backend", "React Developer"].map((trait) => (
                 <span
                   key={trait}
                   className="text-[10px] px-3.5 py-1.5 rounded-full border bg-white/[0.03] text-gray-400 uppercase tracking-widest font-bold hover:border-cyan-500/40 hover:text-cyan-400 hover:bg-cyan-500/5 transition-all cursor-default"
@@ -472,12 +460,12 @@ export default function Page() {
         </section>
 
         {/* ===== SKILLS ===== */}
-        <section id="skills" className="py-24 border-t border-white/5">
+        <section id="skills" aria-label="Skills and Tech Stack — Next.js, Node.js, React, TypeScript" className="py-24 border-t border-white/5">
           <h2 className="text-3xl font-bold mb-4 flex items-center gap-3 italic uppercase tracking-tighter">
-            <span className="w-12 h-[3px] bg-cyan-500 rounded-full"></span>{" "}
-            SKILLS & <span className="text-cyan-500">Arsenal:</span>
+            <span className="w-12 h-[3px] bg-cyan-500 rounded-full" aria-hidden="true"></span>{" "}
+            SKILLS &amp; <span className="text-cyan-500">Tech Stack:</span>
           </h2>
-          <p className="text-gray-500 text-sm italic mb-12">Technologies I build with daily — rated by confidence and production usage.</p>
+          <p className="text-gray-500 text-sm italic mb-12">Next.js, Node.js, React, TypeScript, MySQL — rated by confidence and real-world production usage.</p>
 
           {/* Skill Cards Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
@@ -505,67 +493,72 @@ export default function Page() {
         </section>
 
         {/* ===== FEATURED PROJECTS ===== */}
-        <section id="projects" className="py-24 border-t border-white/5">
+        <section id="projects" aria-label="Full Stack Projects by Yugesh Bastola — MERN Stack Developer Nepal" className="py-24 border-t border-white/5">
           <div className="mb-12">
             <h2 className="text-4xl font-bold italic uppercase tracking-tighter">
-              Featured <span className="text-cyan-400">Projects:</span>
+              Full Stack <span className="text-cyan-400">Projects:</span>
             </h2>
             <p className="text-gray-500 mt-2 italic text-sm font-medium">
-              Engineered for high-throughput scalability, security, and
-              multi-tenant isolation.
+              Scalable web applications and REST API projects built for real-world use — from cloud-based SaaS platforms to enterprise backends.
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-left" role="list" aria-label="Portfolio projects">
             <ProjectCard
               title="Institute SAAS"
               type="Multi-tenant SaaS"
-              desc="A comprehensive educational ecosystem with strict data isolation, custom subdomains, and optimized SQL backend."
+              desc="A full stack cloud-based SaaS platform for educational institutions with tenant data isolation, custom subdomains, and an optimized Node.js REST API backend. Built with Next.js and MySQL."
               tags={["Next.js", "Node.js", "MySQL"]}
               link="https://github.com/Yugesh428/InstituteSAAS"
               isSaaS={true}
               imgSrc="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80"
+              imgAlt="Institute SAAS — cloud-based multi-tenant SaaS platform for educational institutions built with Next.js and Node.js"
             />
             <ProjectCard
               title="Clinic Management"
               type="Healthcare SaaS"
-              desc="Private enterprise solution for clinic chains managing patient records and scheduling with secure RBAC."
+              desc="Enterprise-grade scalable web application for clinic chains. Handles patient records and scheduling via a secure REST API with role-based access control built in React and Express."
               tags={["React", "Express", "Security"]}
               isPrivate={true}
               isSaaS={true}
               imgSrc="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&q=80"
+              imgAlt="Clinic Management — enterprise healthcare SaaS web application with React and REST API"
             />
             <ProjectCard
               title="Staffing Management"
               type="Enterprise SaaS"
-              desc="Built for staffing workflows at Aqore. Manages recruitment life-cycles and client segregation using MSSQL."
+              desc="Full stack project built for Aqore. A cloud-based SaaS platform managing recruitment pipelines, client segregation, and multi-tenant data using Next.js and MSSQL."
               tags={["Next.js", "MSSQL", "Enterprise"]}
               isPrivate={true}
               isSaaS={true}
               imgSrc="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80"
+              imgAlt="Staffing Management — full stack enterprise SaaS platform built with Next.js and MSSQL at Aqore Software"
             />
             <ProjectCard
               title="Room Management"
-              type="Hospitality Engine"
-              desc="Automated booking engine that optimizes room allocation and real-time availability using Node.js logic."
+              type="Hospitality System"
+              desc="Scalable web application with a Node.js REST API backend for real-time room booking, allocation optimization, and availability management with React frontend."
               tags={["Node.js", "React", "MySQL"]}
               link="https://github.com/Yugesh428/RoomManagementSystem"
               imgSrc="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80"
+              imgAlt="Room Management System — Node.js REST API and React full stack web application for hospitality"
             />
             <ProjectCard
               title="Blog CMS"
               type="Infrastructure"
-              desc="A high-performance CMS featuring a custom-built RBAC engine and optimized delivery pipelines."
+              desc="Full stack content management system with a custom RBAC engine, REST API, and optimized delivery pipeline built with vanilla JavaScript."
               tags={["JavaScript", "CRUD", "CMS"]}
               link="https://github.com/Yugesh428/Blog_Management"
               imgSrc="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600&q=80"
+              imgAlt="Blog CMS — full stack content management system with custom RBAC and REST API in JavaScript"
             />
             <ProjectCard
               title="Shoes Store API"
-              type="E-commerce API"
-              desc="RESTful API engineered for transactions. Features complex inventory logic and verified via Postman."
+              type="E-commerce REST API"
+              desc="Node.js REST API development project for e-commerce transactions. Features complex inventory logic, secure endpoints, and full Postman test coverage."
               tags={["Node.js", "Postman", "Security"]}
               link="https://github.com/Yugesh428/shoes-/tree/main/src"
               imgSrc="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80"
+              imgAlt="Shoes Store REST API — Node.js backend e-commerce API with Postman test coverage"
             />
           </div>
         </section>
@@ -647,7 +640,7 @@ export default function Page() {
             <div>
               <h2 className="text-3xl font-bold mb-12 flex items-center gap-3 italic uppercase tracking-tighter">
                 <span className="w-12 h-[3px] bg-blue-500 rounded-full"></span>
-                Experience:
+                Work Experience:
               </h2>
               <div className="space-y-6">
                 <ExperienceItem
@@ -657,21 +650,21 @@ export default function Page() {
                   color="#06b6d4"
                   icon="💻"
                   points={[
-                    "Architecting multitenant SaaS platforms.",
-                    "Implementing secure RESTful APIs.",
-                    "Optimizing Next.js performance.",
+                    "Building scalable multi-tenant SaaS web applications.",
+                    "REST API development with Node.js and Express.",
+                    "Optimizing Next.js and React frontend performance.",
                   ]}
                 />
                 <ExperienceItem
-                  title="Remote Intern — Full Stack"
+                  title="Remote Intern — Full Stack Developer"
                   company="Digital Pathshala"
                   date="2025 - PRESENT"
                   color="#22c55e"
                   icon="🌐"
                   points={[
-                    "Building Bidyalaa EdTech SaaS platform.",
-                    "Developing Hospital Management System.",
-                    "Working on Tourism Management platform.",
+                    "Full stack development of Bidyalaa EdTech SaaS platform.",
+                    "Building Hospital Management scalable web application.",
+                    "React and Node.js development for Tourism platform.",
                   ]}
                 />
                 <ExperienceItem
@@ -681,9 +674,9 @@ export default function Page() {
                   color="#a855f7"
                   icon="🏢"
                   points={[
-                    "Supported enterprise system architecture.",
+                    "Enterprise MSSQL schema design and optimization.",
                     "Authored complex SQL stored procedures.",
-                    "Database schema optimization.",
+                    "Supported Node.js backend REST API architecture.",
                   ]}
                 />
               </div>
