@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import Project from "@/lib/features/project/projectModel";
 import { withCache, cacheDel, KEYS, TTL } from "@/lib/cache";

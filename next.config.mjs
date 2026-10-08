@@ -4,18 +4,14 @@ const nextConfig = {
   pageExtensions: ["js", "jsx", "ts", "tsx"],
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
-      {
-        protocol: "http",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "**" },
+      { protocol: "http",  hostname: "**" },
     ],
   },
-  // Do NOT externalize pg/sequelize — Vercel serverless needs them bundled
-  serverExternalPackages: ["pg", "pg-hstore", "sequelize"],
+  // Next.js 14 key for server-side native packages
+  experimental: {
+    serverComponentsExternalPackages: ["pg", "pg-hstore", "sequelize", "bcryptjs", "ioredis"],
+  },
 };
 
 export default nextConfig;

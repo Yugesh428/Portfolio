@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { seedExperiences } from "@/lib/features/experience/experienceController";
 
 // POST /api/experience/seed

@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest, NextResponse } from "next/server";
 import Skill from "@/lib/features/skill/skillModel";
 import { cacheDel, KEYS } from "@/lib/cache";

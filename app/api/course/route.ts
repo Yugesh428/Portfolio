@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { NextRequest } from "next/server";
 import { getCourses, createCourse } from "@/lib/features/course/courseController";
 
