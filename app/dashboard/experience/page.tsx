@@ -9,6 +9,8 @@ import {
 import Link from "next/link";
 import type { ExperienceData } from "@/lib/hooks/useExperience";
 
+type ExperienceType = "work" | "internship" | "freelance" | "volunteer";
+
 /* ── type colours ── */
 const typeConfig: Record<string, { label: string; color: string; bg: string }> = {
   work:       { label: "Work",       color: "#2563EB", bg: "#EFF6FF" },
@@ -17,23 +19,19 @@ const typeConfig: Record<string, { label: string; color: string; bg: string }> =
   volunteer:  { label: "Volunteer",  color: "#F59E0B", bg: "#FFFBEB" },
 };
 
+type ExperienceForm = {
+  title: string; company: string; location: string; type: ExperienceType;
+  startDate: string; endDate: string; isCurrent: boolean; description: string;
+  points: string[]; techStack: string[]; companyLogo: string;
+  companyUrl: string; certificateImage: string; order: number; featured: boolean;
+};
+
 /* ── blank form ── */
-const blank = {
-  title: "",
-  company: "",
-  location: "Kathmandu, Nepal",
-  type: "work" as const,
-  startDate: "",
-  endDate: "Present",
-  isCurrent: false,
-  description: "",
-  points: [] as string[],
-  techStack: [] as string[],
-  companyLogo: "",
-  companyUrl: "",
-  certificateImage: "",
-  order: 0,
-  featured: false,
+const blank: ExperienceForm = {
+  title: "", company: "", location: "Kathmandu, Nepal", type: "work",
+  startDate: "", endDate: "Present", isCurrent: false, description: "",
+  points: [], techStack: [], companyLogo: "", companyUrl: "",
+  certificateImage: "", order: 0, featured: false,
 };
 
 /* ── tiny helpers ── */
@@ -78,7 +76,7 @@ export default function ExperienceDashboardPage() {
   const [toast, setToast]             = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [showForm, setShowForm]       = useState(false);
   const [editId, setEditId]           = useState<number | null>(null);
-  const [form, setForm]               = useState({ ...blank });
+  const [form, setForm] = useState<ExperienceForm>({ ...blank });
   const [pointInput, setPointInput]   = useState("");
   const [techInput, setTechInput]     = useState("");
   const [seeding, setSeeding]         = useState(false);
@@ -326,7 +324,7 @@ export default function ExperienceDashboardPage() {
                 <Input label="Location" value={form.location} onChange={set("location")} placeholder="Kathmandu, Nepal" />
                 <div className="space-y-1.5">
                   <label className="block text-xs text-gray-700" style={{ fontWeight: 600 }}>Type</label>
-                  <select value={form.type} onChange={e => set("type")(e.target.value as any)}
+                  <select value={form.type} onChange={e => set("type")(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-800 focus:outline-none focus:border-[#2563EB] transition-all"
                     style={{ fontFamily: "Poppins, sans-serif", fontWeight: 400 }}>
                     <option value="work">Work</option>
@@ -420,7 +418,7 @@ export default function ExperienceDashboardPage() {
 
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Company URL" value={form.companyUrl} onChange={set("companyUrl")} placeholder="https://..." />
-                <Input label="Sort Order" type="number" value={form.order} onChange={v => set("order")(parseInt(v) || 0)} placeholder="1" />
+                <Input label="Sort Order" type="number" value={form.order} onChange={(v: string) => set("order")(parseInt(v) || 0)} placeholder="1" />
               </div>
 
               {/* Toggles */}

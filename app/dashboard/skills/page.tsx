@@ -5,7 +5,7 @@ import {
   Plus, Pencil, Trash2, Save, X, Loader2,
   CheckCircle2, AlertCircle, Star, StarOff, Code2,
 } from "lucide-react";
-import type { SkillData } from "@/lib/hooks/useSkill";
+import type { SkillData, SkillCategory } from "@/lib/hooks/useSkill";
 
 const categoryConfig: Record<string, { label: string; gradient: string; color: string }> = {
   frontend: { label: "Frontend", gradient: "from-blue-500 to-cyan-400", color: "#3B82F6" },
@@ -16,8 +16,14 @@ const categoryConfig: Record<string, { label: string; gradient: string; color: s
   other:    { label: "Other",    gradient: "from-gray-500 to-slate-400", color: "#6B7280" },
 };
 
-const blank = {
-  name: "", category: "frontend" as const, logo: "", proficiency: 50,
+type SkillForm = {
+  name: string; category: SkillCategory; logo: string;
+  proficiency: number; yearsOfExperience: number;
+  color: string; order: number; featured: boolean;
+};
+
+const blank: SkillForm = {
+  name: "", category: "frontend", logo: "", proficiency: 50,
   yearsOfExperience: 1, color: "#2563EB", order: 0, featured: false,
 };
 
@@ -40,7 +46,7 @@ export default function SkillsDashboardPage() {
   const [toast, setToast]         = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [showForm, setShowForm]   = useState(false);
   const [editId, setEditId]       = useState<number | null>(null);
-  const [form, setForm]           = useState({ ...blank });
+  const [form, setForm] = useState<SkillForm>({ ...blank });
   const [seeding, setSeeding]     = useState(false);
   const [uploading, setUploading] = useState(false);
   const logoRef = useRef<HTMLInputElement>(null);
@@ -158,7 +164,7 @@ export default function SkillsDashboardPage() {
               
               <div className="space-y-1.5">
                 <label className="block text-xs text-gray-700" style={{ fontWeight: 600 }}>Category</label>
-                <select value={form.category} onChange={e => set("category")(e.target.value as any)}
+                <select value={form.category} onChange={e => set("category")(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:border-[#2563EB] transition-all"
                   style={{ fontFamily: "Poppins, sans-serif" }}>
                   <option value="frontend">Frontend</option>

@@ -5,7 +5,7 @@ import {
   Plus, Pencil, Trash2, Save, X, Loader2,
   CheckCircle2, AlertCircle, BookOpen, Star, StarOff, ExternalLink,
 } from "lucide-react";
-import type { CourseData } from "@/lib/hooks/useCourse";
+import type { CourseData, CourseCategory } from "@/lib/hooks/useCourse";
 
 const categoryConfig: Record<string, { label: string; color: string; bg: string }> = {
   "web-development": { label: "Web Dev",     color: "#2563EB", bg: "#EFF6FF" },
@@ -16,11 +16,17 @@ const categoryConfig: Record<string, { label: string; color: string; bg: string 
   "other":           { label: "Other",       color: "#16A34A", bg: "#F0FDF4" },
 };
 
-const blank = {
-  title: "", issuer: "", category: "web-development" as const,
+type CourseForm = {
+  title: string; issuer: string; category: CourseCategory; completedDate: string;
+  credentialUrl: string; certificateImage: string; certificateImage2: string;
+  description: string; skills: string[]; badgeEmoji: string;
+  color: string; order: number; featured: boolean;
+};
+
+const blank: CourseForm = {
+  title: "", issuer: "", category: "web-development",
   completedDate: "", credentialUrl: "", certificateImage: "", certificateImage2: "",
-  description: "", skills: [] as string[],
-  badgeEmoji: "📜", color: "#2563EB", order: 0, featured: false,
+  description: "", skills: [], badgeEmoji: "📜", color: "#2563EB", order: 0, featured: false,
 };
 
 const colorPresets = [
@@ -60,7 +66,7 @@ export default function CourseDashboardPage() {
   const [toast, setToast]         = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [showForm, setShowForm]   = useState(false);
   const [editId, setEditId]       = useState<number | null>(null);
-  const [form, setForm]           = useState({ ...blank });
+  const [form, setForm] = useState<CourseForm>({ ...blank });
   const [skillInput, setSkillInput] = useState("");
   const [seeding, setSeeding]     = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -189,7 +195,7 @@ export default function CourseDashboardPage() {
                 <Input label="Completed Date" value={form.completedDate} onChange={set("completedDate")} placeholder="Mar 2025" />
                 <div className="space-y-1.5">
                   <label className="block text-xs text-gray-700" style={{ fontWeight: 600 }}>Category</label>
-                  <select value={form.category} onChange={e => set("category")(e.target.value as any)}
+                  <select value={form.category} onChange={e => set("category")(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:border-[#2563EB] transition-all"
                     style={{ fontFamily: "Poppins, sans-serif" }}>
                     <option value="web-development">Web Development</option>

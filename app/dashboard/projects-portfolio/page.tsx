@@ -5,7 +5,7 @@ import {
   Plus, Pencil, Trash2, Save, X, Loader2,
   CheckCircle2, AlertCircle, Star, StarOff, FolderKanban, Github, ExternalLink, Lock,
 } from "lucide-react";
-import type { ProjectData } from "@/lib/hooks/useProject";
+import type { ProjectData, ProjectCategory, ProjectStatus } from "@/lib/hooks/useProject";
 
 const categoryConfig: Record<string, { label: string; color: string; bg: string }> = {
   "saas":    { label: "SaaS",     color: "#2563EB", bg: "#EFF6FF" },
@@ -21,9 +21,17 @@ const statusConfig: Record<string, { label: string; color: string }> = {
   "planned":     { label: "Planned",     color: "#6B7280" },
 };
 
-const blank = {
-  title: "", category: "web-app" as const, status: "completed" as const,
-  description: "", shortDescription: "", technologies: [] as string[],
+type ProjectForm = {
+  title: string; category: ProjectCategory; status: ProjectStatus;
+  description: string; shortDescription: string; technologies: string[];
+  image: string; githubUrl: string; liveUrl: string; isPrivate: boolean;
+  isFeatured: boolean; color: string; badgeEmoji: string;
+  startDate: string; endDate: string; order: number;
+};
+
+const blank: ProjectForm = {
+  title: "", category: "web-app", status: "completed",
+  description: "", shortDescription: "", technologies: [],
   image: "", githubUrl: "", liveUrl: "", isPrivate: false, isFeatured: false,
   color: "#2563EB", badgeEmoji: "💻", startDate: "", endDate: "", order: 0,
 };
@@ -58,7 +66,7 @@ export default function ProjectsPortfolioDashboardPage() {
   const [toast, setToast]         = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [showForm, setShowForm]   = useState(false);
   const [editId, setEditId]       = useState<number | null>(null);
-  const [form, setForm]           = useState({ ...blank });
+  const [form, setForm] = useState<ProjectForm>({ ...blank });
   const [techInput, setTechInput] = useState("");
   const [seeding, setSeeding]     = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -182,7 +190,7 @@ export default function ProjectsPortfolioDashboardPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
                   <label className="block text-xs text-gray-700" style={{ fontWeight: 600 }}>Category</label>
-                  <select value={form.category} onChange={e => set("category")(e.target.value as any)}
+                  <select value={form.category} onChange={e => set("category")(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:border-[#2563EB] transition-all"
                     style={{ fontFamily: "Poppins, sans-serif" }}>
                     <option value="saas">SaaS</option>
@@ -194,7 +202,7 @@ export default function ProjectsPortfolioDashboardPage() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="block text-xs text-gray-700" style={{ fontWeight: 600 }}>Status</label>
-                  <select value={form.status} onChange={e => set("status")(e.target.value as any)}
+                  <select value={form.status} onChange={e => set("status")(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:border-[#2563EB] transition-all"
                     style={{ fontFamily: "Poppins, sans-serif" }}>
                     <option value="completed">Completed</option>

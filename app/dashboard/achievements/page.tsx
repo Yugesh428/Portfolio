@@ -5,7 +5,7 @@ import {
   Plus, Pencil, Trash2, Save, X, Loader2,
   CheckCircle2, AlertCircle, Trophy, Eye, Star, StarOff,
 } from "lucide-react";
-import type { AchievementData } from "@/lib/hooks/useAchievement";
+import type { AchievementData, AchievementType } from "@/lib/hooks/useAchievement";
 
 const typeConfig: Record<string, { label: string; color: string; bg: string }> = {
   hackathon:    { label: "Hackathon",    color: "#F59E0B", bg: "#FFFBEB" },
@@ -15,17 +15,16 @@ const typeConfig: Record<string, { label: string; color: string; bg: string }> =
   volunteer:    { label: "Volunteer",    color: "#EC4899", bg: "#FDF2F8" },
 };
 
-const blank = {
-  title: "",
-  organization: "",
-  date: "",
-  type: "hackathon" as const,
-  description: "",
-  certificateImage: "",
-  badgeEmoji: "🏆",
-  color: "#F59E0B",
-  order: 0,
-  featured: true,
+type AchievementForm = {
+  title: string; organization: string; date: string;
+  type: AchievementType; description: string; certificateImage: string;
+  badgeEmoji: string; color: string; order: number; featured: boolean;
+};
+
+const blank: AchievementForm = {
+  title: "", organization: "", date: "", type: "hackathon",
+  description: "", certificateImage: "", badgeEmoji: "🏆",
+  color: "#F59E0B", order: 0, featured: true,
 };
 
 function Input({ label, value, onChange, placeholder, type = "text" }: any) {
@@ -58,7 +57,7 @@ export default function AchievementDashboardPage() {
   const [toast, setToast]         = useState<{ type: "success" | "error"; msg: string } | null>(null);
   const [showForm, setShowForm]   = useState(false);
   const [editId, setEditId]       = useState<number | null>(null);
-  const [form, setForm]           = useState({ ...blank });
+  const [form, setForm] = useState<AchievementForm>({ ...blank });
   const [seeding, setSeeding]     = useState(false);
   const [uploading, setUploading] = useState(false);
   const certRef = useRef<HTMLInputElement>(null);
@@ -241,7 +240,7 @@ export default function AchievementDashboardPage() {
                 <Input label="Date" value={form.date} onChange={set("date")} placeholder="e.g. May 2026" />
                 <div className="space-y-1.5">
                   <label className="block text-xs text-gray-700" style={{ fontWeight: 600 }}>Type</label>
-                  <select value={form.type} onChange={e => set("type")(e.target.value as any)}
+                  <select value={form.type} onChange={e => set("type")(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white text-sm text-gray-800 focus:outline-none focus:border-[#2563EB] transition-all"
                     style={{ fontFamily: "Poppins, sans-serif", fontWeight: 400 }}>
                     <option value="hackathon">Hackathon</option>

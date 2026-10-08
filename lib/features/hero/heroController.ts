@@ -8,6 +8,7 @@ const DEFAULT_HERO = {
   title: "Full Stack Developer",
   subtitle: "Yugesh Bastola",
   description: "Full Stack Developer from Nepal building scalable SaaS web applications using Next.js, Node.js, React, and SQL databases.",
+  profileImage: null as unknown as string,
   resumeUrl: "/yugesh_resume.pdf",
   githubUrl: "https://github.com/Yugesh428",
   linkedinUrl: "https://www.linkedin.com/in/yugesh-bastola-315638317/",
