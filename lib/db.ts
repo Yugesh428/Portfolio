@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize";
+import pg from "pg";
 
 const DATABASE_URL = process.env.DATABASE_URL!;
 
@@ -8,6 +9,7 @@ if (!DATABASE_URL) {
 
 const sequelize = new Sequelize(DATABASE_URL, {
   dialect: "postgres",
+  dialectModule: pg, // Explicitly pass pg module for serverless/Vercel compatibility
   dialectOptions: {
     ssl: {
       require: true,

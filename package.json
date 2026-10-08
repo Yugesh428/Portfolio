@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.42",
+    "@types/pg": "^8.23.1",
     "@types/react": "^18.2.48",
     "autoprefixer": "^10.4.17",
     "eslint": "^8.57.0",
