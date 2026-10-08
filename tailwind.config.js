@@ -14,4 +14,8 @@ module.exports = {
     },
   },
   plugins: [],
+  corePlugins: {
+    // Disable default container centering so sections span full width
+    container: false,
+  },
 }

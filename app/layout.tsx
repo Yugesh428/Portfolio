@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import Navbar from "../components/Navbar";
-import Chatbot from "../components/Chatbot";
-import PageLoader from "../components/PageLoader";
-import ScrollProgress from "../components/ScrollProgress";
 import { Analytics } from "@vercel/analytics/react";
+import SessionWrapper from "../components/SessionWrapper";
+import LayoutContent from "../components/LayoutContent";
 
 const BASE_URL = "https://yugeshbastola.com.np";
 
@@ -150,13 +148,13 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="bg-[#050505] text-white antialiased">
-        <PageLoader />
-        <ScrollProgress />
-        <Navbar />
-        {children}
-        <Chatbot />
-        <Analytics />
+      <body className="antialiased">
+        <SessionWrapper>
+          <LayoutContent>
+            {children}
+          </LayoutContent>
+          <Analytics />
+        </SessionWrapper>
       </body>
     </html>
   );

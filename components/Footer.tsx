@@ -1,108 +1,162 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Linkedin, Mail, ChevronRight } from "lucide-react";
+import { Github, Linkedin, Mail, FileText, ArrowUpRight } from "lucide-react";
+
+const quickLinks = [
+  { href: "/",            label: "Home"         },
+  { href: "/skill",       label: "Skills"       },
+  { href: "/experience",  label: "Experience"   },
+  { href: "/achievement", label: "Achievements" },
+  { href: "/course",      label: "Courses"      },
+  { href: "/project",     label: "Projects"     },
+  { href: "/contact",     label: "Contact"      },
+];
+
+const contactLinks = [
+  {
+    href: "mailto:bastolayugesh2@gmail.com",
+    label: "bastolayugesh2@gmail.com",
+    icon: Mail,
+    color: "#EA4335",
+    bg: "#FEF2F2",
+  },
+  {
+    href: "https://www.linkedin.com/in/yugesh-bastola-315638317/",
+    label: "yugesh-bastola",
+    icon: Linkedin,
+    color: "#0A66C2",
+    bg: "#EFF6FF",
+    external: true,
+  },
+  {
+    href: "https://github.com/Yugesh428",
+    label: "Yugesh428",
+    icon: Github,
+    color: "#18181B",
+    bg: "#F4F4F5",
+    external: true,
+  },
+];
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="w-full border-t border-white/5 bg-[#050505] pt-16 pb-8">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Top Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand Info */}
-          <div className="md:col-span-2 space-y-4">
-            <h3 className="text-xl font-black tracking-tighter">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent text-2xl">
-                Yugesh
-              </span>
-              .dev
-            </h3>
-            <p className="text-gray-400 text-sm max-w-sm leading-relaxed italic">
-              Specializing in building high-performance multi-tenant SaaS
-              applications and enterprise-grade digital solutions.
+    <footer
+      className="w-full bg-white border-t border-gray-100"
+      style={{ fontFamily: "Poppins, sans-serif" }}
+    >
+      <div className="max-w-7xl mx-auto px-6 lg:px-16 pt-14 pb-8">
+
+        {/* ── Top grid ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+
+          {/* Brand */}
+          <div className="lg:col-span-2 space-y-5">
+            {/* Logo */}
+            <Link href="/" className="inline-flex items-center gap-3 group">
+              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#2563EB] to-[#3B82F6] flex items-center justify-center shadow-lg shadow-blue-500/25 group-hover:shadow-blue-500/40 transition-all group-hover:scale-105">
+                <span className="text-white text-lg" style={{ fontWeight: 700 }}>Y</span>
+              </div>
+              <div>
+                <p className="text-gray-900 text-sm leading-none" style={{ fontWeight: 700 }}>Yugesh Bastola</p>
+                <p className="text-gray-400 text-xs mt-0.5" style={{ fontWeight: 400 }}>Full Stack Developer</p>
+              </div>
+            </Link>
+
+            <p className="text-gray-500 text-sm leading-relaxed max-w-sm" style={{ fontWeight: 400 }}>
+              Building scalable web applications and SaaS products from Nepal — one commit at a time.
             </p>
-            <div className="flex gap-4 pt-2">
-              <a
-                href="https://github.com/Yugesh428"
-                target="_blank"
-                className="p-2 rounded-full bg-white/5 border border-white/10 hover:text-purple-400 transition-colors"
-              >
-                <Github size={18} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/yugesh-bastola-315638317/"
-                target="_blank"
-                className="p-2 rounded-full bg-white/5 border border-white/10 hover:text-blue-400 transition-colors"
-              >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href="mailto:bastolayugesh2@gmail.com"
-                className="p-2 rounded-full bg-white/5 border border-white/10 hover:text-red-400 transition-colors"
-              >
-                <Mail size={18} />
-              </a>
+
+            {/* Social icons */}
+            <div className="flex items-center gap-2 pt-1">
+              {contactLinks.map(({ href, icon: Icon, color, bg, external, label }) => (
+                <a
+                  key={href}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  aria-label={label}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center border border-gray-100 hover:scale-105 hover:shadow-md transition-all"
+                  style={{ background: bg }}
+                >
+                  <Icon size={17} style={{ color }} />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Links */}
+          {/* Quick Links */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6">
-              Sitemap
-            </h4>
-            <ul className="space-y-3 text-sm text-gray-400">
-              <li>
-                <a
-                  href="#about"
-                  className="hover:text-white transition flex items-center gap-2 group"
-                >
-                  <ChevronRight size={12} className="text-purple-500" /> About
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#skills"
-                  className="hover:text-white transition flex items-center gap-2 group"
-                >
-                  <ChevronRight size={12} className="text-purple-500" /> Skills
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#projects"
-                  className="hover:text-white transition flex items-center gap-2 group"
-                >
-                  <ChevronRight size={12} className="text-purple-500" />{" "}
-                  Projects
-                </a>
-              </li>
+            <p className="text-[11px] uppercase tracking-[0.2em] text-gray-400 mb-5" style={{ fontWeight: 700 }}>
+              Quick Links
+            </p>
+            <ul className="space-y-2.5">
+              {quickLinks.map(({ href, label }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="text-sm text-gray-500 hover:text-[#2563EB] flex items-center gap-1.5 group transition-colors"
+                    style={{ fontWeight: 500 }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover:bg-[#2563EB] flex-shrink-0 transition-colors"
+                    />
+                    {label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Contact Details */}
+          {/* Contact */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-gray-500 mb-6">
+            <p className="text-[11px] uppercase tracking-[0.2em] text-gray-400 mb-5" style={{ fontWeight: 700 }}>
               Contact
-            </h4>
-            <div className="space-y-4 text-sm">
-              <p className="text-gray-400">Kathmandu, Nepal</p>
-              <a
-                href="mailto:bastolayugesh2@gmail.com"
-                className="block text-blue-400 hover:underline"
-              >
-                bastolayugesh2@gmail.com
-              </a>
-            </div>
+            </p>
+            <ul className="space-y-3">
+              {contactLinks.map(({ href, label, icon: Icon, color, external }) => (
+                <li key={href}>
+                  <a
+                    href={href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                    className="flex items-center gap-2.5 text-sm text-gray-500 hover:text-gray-900 group transition-colors"
+                    style={{ fontWeight: 500 }}
+                  >
+                    <Icon size={14} style={{ color }} className="flex-shrink-0" />
+                    <span className="truncate group-hover:underline underline-offset-2">{label}</span>
+                    {external && (
+                      <ArrowUpRight size={11} className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color }} />
+                    )}
+                  </a>
+                </li>
+              ))}
+
+              <li className="pt-1">
+                <p className="flex items-center gap-2.5 text-sm text-gray-400" style={{ fontWeight: 400 }}>
+                  <span className="text-base leading-none">📍</span>
+                  Kathmandu, Nepal
+                </p>
+              </li>
+            </ul>
           </div>
         </div>
 
-        {/* Bottom Bar - FIXED POSITION */}
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">
-            © {new Date().getFullYear()} Yugesh Bastola • Kathmandu, Nepal
+        {/* ── Divider ── */}
+        <div className="border-t border-gray-100" />
+
+        {/* ── Bottom bar ── */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-gray-400" style={{ fontWeight: 500 }}>
+            © {year} Yugesh Bastola · All rights reserved.
           </p>
-          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-600">
-            Built with Next.js & Tailwind
+          <p className="text-xs text-gray-400 flex items-center gap-1.5" style={{ fontWeight: 400 }}>
+            Built with
+            <span className="text-[#2563EB]" style={{ fontWeight: 600 }}>Next.js</span>
+            &amp;
+            <span className="text-[#2563EB]" style={{ fontWeight: 600 }}>Tailwind CSS</span>
           </p>
         </div>
       </div>
