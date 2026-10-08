@@ -14,18 +14,8 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Don't bundle these packages for server-side
-      config.externals = config.externals || [];
-      config.externals.push({
-        'pg': 'commonjs pg',
-        'pg-hstore': 'commonjs pg-hstore',
-        'sequelize': 'commonjs sequelize',
-      });
-    }
-    return config;
-  },
+  // Do NOT externalize pg/sequelize — Vercel serverless needs them bundled
+  serverExternalPackages: ["pg", "pg-hstore", "sequelize"],
 };
 
 export default nextConfig;
