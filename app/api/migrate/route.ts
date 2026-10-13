@@ -156,6 +156,50 @@ export async function POST() {
     }
     console.log("✅ projects legacy columns ensured");
 
+    // Migration 8: Create job_opportunities table
+    try {
+      await sequelize.query(`
+        CREATE TABLE IF NOT EXISTS job_opportunities (
+          id                SERIAL PRIMARY KEY,
+          company           VARCHAR(200)  NOT NULL,
+          title             VARCHAR(300)  NOT NULL,
+          type              VARCHAR(50)   NOT NULL DEFAULT 'job',
+          description       TEXT          NOT NULL,
+          url               VARCHAR(500)  NOT NULL UNIQUE,
+          location          VARCHAR(200)  NOT NULL DEFAULT 'Kathmandu, Nepal',
+          "postedDate"      TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+          deadline          TIMESTAMPTZ   NULL,
+          salary            VARCHAR(100)  NULL,
+          requirements      TEXT          NULL,
+          "isRead"          BOOLEAN       NOT NULL DEFAULT false,
+          "isArchived"      BOOLEAN       NOT NULL DEFAULT false,
+          "createdAt"       TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+          "updatedAt"       TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+        );
+      `);
+      console.log("✅ job_opportunities table created");
+
+      // Create indexes for better query performance
+      await sequelize.query(`
+        CREATE INDEX IF NOT EXISTS idx_job_opportunities_company ON job_opportunities(company);
+      `);
+      await sequelize.query(`
+        CREATE INDEX IF NOT EXISTS idx_job_opportunities_type ON job_opportunities(type);
+      `);
+      await sequelize.query(`
+        CREATE INDEX IF NOT EXISTS idx_job_opportunities_isRead ON job_opportunities("isRead");
+      `);
+      await sequelize.query(`
+        CREATE INDEX IF NOT EXISTS idx_job_opportunities_isArchived ON job_opportunities("isArchived");
+      `);
+      await sequelize.query(`
+        CREATE INDEX IF NOT EXISTS idx_job_opportunities_postedDate ON job_opportunities("postedDate");
+      `);
+      console.log("✅ job_opportunities indexes created");
+    } catch (err: any) {
+      console.log("ℹ️ job_opportunities table:", err.message);
+    }
+
     return NextResponse.json({
       success: true,
       message: "Database migrations completed successfully",
@@ -167,6 +211,8 @@ export async function POST() {
         "skills table (CREATE IF NOT EXISTS)",
         "projects table (CREATE IF NOT EXISTS)",
         "projects portfolio columns (ADD IF NOT EXISTS)",
+        "job_opportunities table (CREATE IF NOT EXISTS)",
+        "job_opportunities indexes (CREATE IF NOT EXISTS)",
       ],
     });
   } catch (error: any) {

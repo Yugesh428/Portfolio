@@ -127,3 +127,76 @@ export async function sendProjectCreatedEmail({
       </div>`,
   });
 }
+
+// ── Job Opportunity Alert ────────────────────────────────────────────────────
+export async function sendJobAlert(job: {
+  company: string;
+  title: string;
+  type: string;
+  description: string;
+  url: string;
+  location: string;
+  deadline?: Date;
+  salary?: string;
+}) {
+  const typeEmoji = {
+    internship: "🎓",
+    bootcamp: "🚀",
+    job: "💼",
+    cohort: "👥",
+    other: "📢",
+  }[job.type] || "📢";
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to: process.env.NODEMAILER_GMAIL, // Send to yourself
+    subject: `${typeEmoji} New ${job.type}: ${job.title} at ${job.company}`,
+    html: `
+      <div style="font-family:Inter,sans-serif;max-width:600px;margin:auto;background:#f9fafb;border-radius:12px;overflow:hidden;border:1px solid #e5e7eb;">
+        <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:32px 28px;">
+          <h1 style="color:#fff;margin:0;font-size:22px;font-weight:800;">${typeEmoji} New Opportunity Found!</h1>
+          <p style="color:rgba(255,255,255,0.9);margin:6px 0 0;font-size:13px;">${job.company} · ${job.location}</p>
+        </div>
+        <div style="padding:28px;">
+          <h2 style="font-size:20px;color:#111827;margin:0 0 8px;font-weight:700;">${job.title}</h2>
+          <div style="display:inline-block;background:#dbeafe;color:#1e40af;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:16px;">${job.type}</div>
+          
+          <table style="width:100%;border-collapse:collapse;margin:20px 0;">
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;font-weight:600;width:100px;">Company</td>
+              <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:14px;color:#111827;">${job.company}</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;font-weight:600;">Location</td>
+              <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:14px;color:#111827;">${job.location}</td>
+            </tr>
+            ${job.salary ? `
+            <tr>
+              <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:12px;color:#6b7280;font-weight:600;">Salary</td>
+              <td style="padding:8px 0;border-bottom:1px solid #e5e7eb;font-size:14px;color:#10b981;font-weight:600;">${job.salary}</td>
+            </tr>
+            ` : ""}
+            ${job.deadline ? `
+            <tr>
+              <td style="padding:8px 0;font-size:12px;color:#6b7280;font-weight:600;">Deadline</td>
+              <td style="padding:8px 0;font-size:14px;color:#ef4444;font-weight:600;">${new Date(job.deadline).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</td>
+            </tr>
+            ` : ""}
+          </table>
+
+          <div style="margin:20px 0;">
+            <p style="font-size:12px;color:#6b7280;font-weight:600;margin:0 0 8px;">Description</p>
+            <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:16px;font-size:14px;color:#374151;line-height:1.7;">${job.description.substring(0, 300)}${job.description.length > 300 ? "..." : ""}</div>
+          </div>
+
+          <div style="margin-top:28px;text-align:center;">
+            <a href="${job.url}" target="_blank" style="display:inline-block;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:14px 32px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;">View Full Details →</a>
+          </div>
+
+          <div style="margin-top:24px;padding-top:24px;border-top:1px solid #e5e7eb;text-align:center;">
+            <p style="font-size:12px;color:#9ca3af;margin:0;">🤖 This opportunity was automatically detected by your portfolio job tracker</p>
+          </div>
+        </div>
+      </div>`,
+  });
+}
