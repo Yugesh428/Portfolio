@@ -11,6 +11,8 @@ import Course from "../features/course/courseModel";
 import Skill from "../features/skill/skillModel";
 import ProjectPortfolio from "../features/project/projectModel";
 import JobOpportunity from "./JobOpportunity";
+import LearningLink from "./LearningLink";
+import CreativeWork from "./CreativeWork";
 // importing redis here ensures the singleton is created (and connects) on first module load
 import "../redis";
 
@@ -50,4 +52,4 @@ export async function syncDB(): Promise<void> {
   }
 }
 
-export { sequelize, User, Project, Message, Notification, ContactMessage, Hero, Experience, Achievement, Course, Skill, ProjectPortfolio, JobOpportunity };
+export { sequelize, User, Project, Message, Notification, ContactMessage, Hero, Experience, Achievement, Course, Skill, ProjectPortfolio, JobOpportunity, LearningLink, CreativeWork };

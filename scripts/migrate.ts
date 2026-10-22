@@ -235,6 +235,81 @@ async function runMigrations() {
       console.log(`ℹ️  job_opportunities table: ${err.message}\n`);
     }
 
+    // Migration 9: Create learning_links table
+    console.log("📝 Migration 9: learning_links table");
+    try {
+      await sequelize.query(`
+        CREATE TABLE IF NOT EXISTS learning_links (
+          id                SERIAL PRIMARY KEY,
+          title             VARCHAR(300)  NOT NULL,
+          url               VARCHAR(1000) NOT NULL,
+          type              VARCHAR(50)   NOT NULL DEFAULT 'article',
+          category          VARCHAR(100)  NOT NULL DEFAULT 'programming',
+          platform          VARCHAR(100)  NOT NULL DEFAULT 'Other',
+          description       TEXT          NOT NULL DEFAULT '',
+          "thumbnailUrl"    VARCHAR(1000) NULL,
+          author            VARCHAR(200)  NULL,
+          duration          VARCHAR(50)   NULL,
+          "isCompleted"     BOOLEAN       NOT NULL DEFAULT false,
+          "isFavorite"      BOOLEAN       NOT NULL DEFAULT false,
+          progress          INTEGER       NOT NULL DEFAULT 0,
+          rating            INTEGER       NULL,
+          notes             TEXT          NULL,
+          tags              VARCHAR(500)  NOT NULL DEFAULT '',
+          "createdAt"       TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+          "updatedAt"       TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+        );
+      `);
+      console.log("✅ learning_links table created");
+
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_learning_links_type ON learning_links(type);`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_learning_links_category ON learning_links(category);`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_learning_links_platform ON learning_links(platform);`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_learning_links_isCompleted ON learning_links("isCompleted");`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_learning_links_isFavorite ON learning_links("isFavorite");`);
+      console.log("✅ learning_links indexes created\n");
+    } catch (err: any) {
+      console.log(`ℹ️  learning_links table: ${err.message}\n`);
+    }
+
+    // Migration 10: Create creative_works table
+    console.log("📝 Migration 10: creative_works table");
+    try {
+      await sequelize.query(`
+        CREATE TABLE IF NOT EXISTS creative_works (
+          id                SERIAL PRIMARY KEY,
+          title             VARCHAR(300)  NOT NULL,
+          type              VARCHAR(50)   NOT NULL DEFAULT 'other',
+          category          VARCHAR(100)  NOT NULL DEFAULT 'general',
+          description       TEXT          NOT NULL DEFAULT '',
+          content           TEXT          NULL,
+          "fileUrl"         VARCHAR(1000) NULL,
+          "fileName"        VARCHAR(255)  NULL,
+          "fileSize"        INTEGER       NULL,
+          "coverImageUrl"   VARCHAR(1000) NULL,
+          status            VARCHAR(50)   NOT NULL DEFAULT 'draft',
+          "isPublic"        BOOLEAN       NOT NULL DEFAULT false,
+          "wordCount"       INTEGER       NULL,
+          language          VARCHAR(50)   NOT NULL DEFAULT 'english',
+          tags              VARCHAR(500)  NOT NULL DEFAULT '',
+          "publishedDate"   TIMESTAMPTZ   NULL,
+          notes             TEXT          NULL,
+          "createdAt"       TIMESTAMPTZ   NOT NULL DEFAULT NOW(),
+          "updatedAt"       TIMESTAMPTZ   NOT NULL DEFAULT NOW()
+        );
+      `);
+      console.log("✅ creative_works table created");
+
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_creative_works_type ON creative_works(type);`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_creative_works_category ON creative_works(category);`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_creative_works_status ON creative_works(status);`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_creative_works_isPublic ON creative_works("isPublic");`);
+      await sequelize.query(`CREATE INDEX IF NOT EXISTS idx_creative_works_language ON creative_works(language);`);
+      console.log("✅ creative_works indexes created\n");
+    } catch (err: any) {
+      console.log(`ℹ️  creative_works table: ${err.message}\n`);
+    }
+
     console.log("🎉 All migrations completed successfully!");
     console.log("\n📊 Summary:");
     console.log("  1. experiences.certificateImage");
@@ -245,6 +320,8 @@ async function runMigrations() {
     console.log("  6. portfolio_projects table");
     console.log("  7. projects portfolio columns");
     console.log("  8. job_opportunities table + indexes");
+    console.log("  9. learning_links table + indexes");
+    console.log("  10. creative_works table + indexes");
     
     await sequelize.close();
     process.exit(0);

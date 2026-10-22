@@ -7,13 +7,15 @@ import Link from "next/link";
 import {
   LayoutDashboard, Users, FolderKanban, MessageSquare,
   Bell, LogOut, Home, FileText, ExternalLink,
-  ChevronDown, Search, Settings, Menu, X, Sparkles, Briefcase, Trophy, BookOpen, Code2, BarChart2, Target,
+  ChevronDown, Search, Settings, Menu, X, Sparkles, Briefcase, Trophy, BookOpen, Code2, BarChart2, Target, Link2, PenTool,
 } from "lucide-react";
 
 const navItems = [
   { href: "/dashboard",                    icon: LayoutDashboard, label: "Overview"           },
   { href: "/dashboard/analytics",          icon: BarChart2,       label: "Analytics"          },
   { href: "/dashboard/jobs",               icon: Target,          label: "Job Opportunities"  },
+  { href: "/dashboard/learning-links",     icon: Link2,           label: "Learning Resources" },
+  { href: "/dashboard/creative-works",     icon: PenTool,         label: "Creative Works"     },
   { href: "/dashboard/hero",               icon: Sparkles,        label: "Hero Section"       },
   { href: "/dashboard/resume",             icon: FileText,        label: "Resume"             },
   { href: "/dashboard/experience",         icon: Briefcase,       label: "Experience"         },
