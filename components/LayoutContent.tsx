@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import Chatbot from "./Chatbot";
 import ScrollProgress from "./ScrollProgress";
 
 export default function LayoutContent({ children }: { children: React.ReactNode }) {
@@ -16,7 +15,6 @@ export default function LayoutContent({ children }: { children: React.ReactNode 
       {!isAuthPage && <Navbar />}
       {children}
       {!isAuthPage && <Footer />}
-      {!isAuthPage && <Chatbot />}
     </>
   );
 }
