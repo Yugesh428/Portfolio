@@ -10,6 +10,8 @@ class ContactMessage extends Model<
   declare email: string;
   declare subject: string;
   declare message: string;
+  declare ipAddress: CreationOptional<string | null>;
+  declare userAgent: CreationOptional<string | null>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 }
@@ -52,6 +54,14 @@ ContactMessage.init(
         notEmpty: true,
         len: [1, 5000],
       },
+    },
+    ipAddress: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    userAgent: {
+      type: DataTypes.TEXT,
+      allowNull: true,
     },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,

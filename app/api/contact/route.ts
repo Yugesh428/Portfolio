@@ -182,6 +182,8 @@ export async function POST(req: NextRequest) {
       email:   cleanEmail,
       subject: cleanSubject,
       message: cleanMessage,
+      ipAddress: clientIp,
+      userAgent: req.headers.get("user-agent") || null,
     });
 
     // — Send email notifications (non-blocking on failure) —
