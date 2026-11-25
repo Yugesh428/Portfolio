@@ -13,13 +13,88 @@ async function ensureSync() {
   }
 }
 
-// Basic input sanitizer
+// Rate limiting: Store submission timestamps per IP
+const rateLimitMap = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const MAX_SUBMISSIONS_PER_HOUR = 3;
+
+function checkRateLimit(ip: string): { allowed: boolean; resetIn?: number } {
+  const now = Date.now();
+  const submissions = rateLimitMap.get(ip) || [];
+  
+  // Remove old submissions outside the time window
+  const recentSubmissions = submissions.filter(
+    (timestamp) => now - timestamp < RATE_LIMIT_WINDOW
+  );
+  
+  if (recentSubmissions.length >= MAX_SUBMISSIONS_PER_HOUR) {
+    const oldestSubmission = Math.min(...recentSubmissions);
+    const resetIn = Math.ceil((oldestSubmission + RATE_LIMIT_WINDOW - now) / 1000 / 60);
+    return { allowed: false, resetIn };
+  }
+  
+  // Add current submission
+  recentSubmissions.push(now);
+  rateLimitMap.set(ip, recentSubmissions);
+  
+  // Cleanup old entries periodically
+  if (rateLimitMap.size > 1000) {
+    for (const [key, timestamps] of rateLimitMap.entries()) {
+      const validTimestamps = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW);
+      if (validTimestamps.length === 0) {
+        rateLimitMap.delete(key);
+      }
+    }
+  }
+  
+  return { allowed: true };
+}
+
+// Enhanced XSS sanitizer - strips ALL HTML tags and dangerous characters
 function sanitize(str: string): string {
-  return str.trim().replace(/[<>]/g, "");
+  return str
+    .trim()
+    // Remove all HTML tags
+    .replace(/<[^>]*>/g, "")
+    // Remove script/event handlers
+    .replace(/on\w+\s*=\s*["'][^"']*["']/gi, "")
+    .replace(/javascript:/gi, "")
+    // Remove dangerous characters
+    .replace(/[<>'"&]/g, (char) => {
+      const entities: Record<string, string> = {
+        "<": "&lt;",
+        ">": "&gt;",
+        "'": "&#39;",
+        '"': "&quot;",
+        "&": "&amp;",
+      };
+      return entities[char] || char;
+    });
+}
+
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  const realIp = req.headers.get("x-real-ip");
+  return forwarded?.split(",")[0].trim() || realIp || "unknown";
 }
 
 export async function POST(req: NextRequest) {
   try {
+    // Get client IP for rate limiting
+    const clientIp = getClientIp(req);
+    
+    // Check rate limit
+    const rateLimit = checkRateLimit(clientIp);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many submissions. Please try again in ${rateLimit.resetIn} minutes.`,
+        },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { name, email, subject, message } = body;
 
@@ -35,6 +110,27 @@ export async function POST(req: NextRequest) {
     if (!emailRegex.test(email)) {
       return NextResponse.json(
         { success: false, error: "Invalid email address." },
+        { status: 400 }
+      );
+    }
+
+    // Additional validation - block suspicious patterns
+    const suspiciousPatterns = [
+      /script/i,
+      /onerror/i,
+      /onload/i,
+      /onclick/i,
+      /javascript:/i,
+      /<iframe/i,
+      /<embed/i,
+      /<object/i,
+    ];
+
+    const allText = `${name} ${email} ${subject} ${message}`;
+    if (suspiciousPatterns.some((pattern) => pattern.test(allText))) {
+      console.warn(`[SECURITY] Suspicious content detected from IP: ${clientIp}`);
+      return NextResponse.json(
+        { success: false, error: "Invalid content detected. Please remove any special characters or scripts." },
         { status: 400 }
       );
     }
