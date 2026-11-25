@@ -96,13 +96,48 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { name, email, subject, message } = body;
+    const { name, email, subject, message, recaptchaToken } = body;
 
     // — Validation —
     if (!name || !email || !subject || !message) {
       return NextResponse.json(
         { success: false, error: "All fields are required." },
         { status: 400 }
+      );
+    }
+
+    // Verify reCAPTCHA
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        { success: false, error: "Please complete the reCAPTCHA verification." },
+        { status: 400 }
+      );
+    }
+
+    try {
+      const recaptchaResponse = await fetch(
+        `https://www.google.com/recaptcha/api/siteverify`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+        }
+      );
+
+      const recaptchaData = await recaptchaResponse.json();
+
+      if (!recaptchaData.success || recaptchaData.score < 0.5) {
+        console.warn(`[SECURITY] reCAPTCHA failed from IP: ${clientIp}`);
+        return NextResponse.json(
+          { success: false, error: "reCAPTCHA verification failed. Please try again." },
+          { status: 400 }
+        );
+      }
+    } catch (error) {
+      console.error("[SECURITY] reCAPTCHA verification error:", error);
+      return NextResponse.json(
+        { success: false, error: "Verification service unavailable. Please try again later." },
+        { status: 503 }
       );
     }
 

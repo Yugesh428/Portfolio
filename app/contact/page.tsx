@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Mail, Send, Github, Linkedin, Twitter, CheckCircle2, AlertCircle, MapPin } from "lucide-react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 interface HeroContact {
   emailUrl: string;
@@ -16,6 +17,8 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({ name: "", email: "", subject: "", message: "" });
   const [loading, setLoading]   = useState(false);
   const [status, setStatus]     = useState<{ type: "success" | "error" | null; message: string }>({ type: null, message: "" });
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [hero, setHero]         = useState<HeroContact>({
     emailUrl:    "mailto:bastolayugesh2@gmail.com",
     githubUrl:   "https://github.com/Yugesh428",
@@ -38,23 +41,33 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!recaptchaToken) {
+      setStatus({ type: "error", message: "Please complete the reCAPTCHA verification." });
+      return;
+    }
+    
     setLoading(true);
     setStatus({ type: null, message: "" });
     try {
       const res  = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, recaptchaToken }),
       });
       const data = await res.json();
       if (data.success) {
         setStatus({ type: "success", message: data.message || "Message sent! I'll get back to you soon." });
         setFormData({ name: "", email: "", subject: "", message: "" });
+        setRecaptchaToken(null);
+        recaptchaRef.current?.reset();
       } else {
         setStatus({ type: "error", message: data.error || "Something went wrong. Please try again." });
+        recaptchaRef.current?.reset();
       }
     } catch {
       setStatus({ type: "error", message: "Network error. Check your connection and try again." });
+      recaptchaRef.current?.reset();
     } finally {
       setLoading(false);
     }
@@ -211,6 +224,16 @@ export default function ContactPage() {
                   placeholder="Tell me about your project or idea..."
                   className="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all resize-none"
                   style={{ fontWeight: 400 }} />
+              </div>
+
+              {/* reCAPTCHA */}
+              <div className="flex justify-center">
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                  onChange={(token) => setRecaptchaToken(token)}
+                  onExpired={() => setRecaptchaToken(null)}
+                />
               </div>
 
               {/* Status */}
